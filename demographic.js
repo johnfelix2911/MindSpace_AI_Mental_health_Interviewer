@@ -1,3 +1,11 @@
+/* ── Collapsible section toggle ─────────────────────────────── */
+function toggleSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+    section.classList.toggle('collapsed');
+}
+
+/* ── Form submission (preserved logic) ─────────────────────── */
 async function continueInterview() {
     const statusMsg = document.getElementById('statusMessage');
     const btn = document.querySelector('.primary-btn');

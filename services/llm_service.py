@@ -119,9 +119,7 @@ def _ensure_local_llm() -> bool:
         _local_model = AutoModelForCausalLM.from_pretrained(
             LOCAL_LLM_MODEL_NAME,
             torch_dtype=torch.float32,
-            device_map="cpu",
-            low_cpu_mem_usage=True,
-        )
+        ).to("cpu")
         _local_model.eval()
         _local_available = True
         print(f"[LLM-LOCAL] Model loaded successfully on CPU.")
