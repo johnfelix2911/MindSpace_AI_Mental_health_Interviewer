@@ -3,6 +3,10 @@ function toggleSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (!section) return;
     section.classList.toggle('collapsed');
+    const toggle = section.querySelector('.section-toggle');
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', String(!section.classList.contains('collapsed')));
+    }
 }
 
 /* ── Stressor chip multi-select ────────────────────────────── */
@@ -11,9 +15,19 @@ function initStressorChips() {
     chips.forEach(chip => {
         const checkbox = chip.querySelector('input[type="checkbox"]');
         if (checkbox) {
+            chip.addEventListener('click', function(event) {
+                if (event.target === checkbox) return;
+                event.preventDefault();
+                checkbox.checked = !checkbox.checked;
+                chip.classList.toggle('active', checkbox.checked);
+                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+
             checkbox.addEventListener('change', function() {
                 chip.classList.toggle('active', this.checked);
             });
+
+            chip.classList.toggle('active', checkbox.checked);
         }
     });
 }

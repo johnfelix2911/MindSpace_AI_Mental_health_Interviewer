@@ -54,15 +54,15 @@
 
                 <!-- 2. Academic / Professional -->
                 <section class="section-panel collapsed" id="sectionAcademic">
-                    <button type="button" class="section-toggle" onclick="toggleSection('sectionAcademic')">
-                        <div class="section-heading" style="margin-bottom:0">
-                            <p class="section-label">Context</p>
-                            <h3>Academic / Professional Context</h3>
-                            <p>Context around your responsibilities and environment.</p>
-                        </div>
-                        <span class="toggle-icon">&#9662;</span>
+                    <button type="button" class="section-toggle" onclick="toggleSection('sectionAcademic')" aria-expanded="false" aria-controls="sectionAcademicBody">
+                        <span class="section-toggle-copy">
+                            <span class="section-label">Context</span>
+                            <span class="section-title">Academic / Professional Context</span>
+                            <span class="section-description">Context around your responsibilities and environment.</span>
+                        </span>
+                        <span class="toggle-icon" aria-hidden="true">&#9662;</span>
                     </button>
-                    <div class="section-body">
+                    <div class="section-body" id="sectionAcademicBody">
                         <div class="section-body-inner">
                             <div class="grid" style="margin-top:14px">
                                 <select id="role">
@@ -92,15 +92,15 @@
 
                 <!-- 3. Lifestyle -->
                 <section class="section-panel collapsed" id="sectionLifestyle">
-                    <button type="button" class="section-toggle" onclick="toggleSection('sectionLifestyle')">
-                        <div class="section-heading" style="margin-bottom:0">
-                            <p class="section-label">Lifestyle</p>
-                            <h3>Lifestyle Context</h3>
-                            <p>Signal for the pace and pressure of your day-to-day life.</p>
-                        </div>
-                        <span class="toggle-icon">&#9662;</span>
+                    <button type="button" class="section-toggle" onclick="toggleSection('sectionLifestyle')" aria-expanded="false" aria-controls="sectionLifestyleBody">
+                        <span class="section-toggle-copy">
+                            <span class="section-label">Lifestyle</span>
+                            <span class="section-title">Lifestyle Context</span>
+                            <span class="section-description">Signal for the pace and pressure of your day-to-day life.</span>
+                        </span>
+                        <span class="toggle-icon" aria-hidden="true">&#9662;</span>
                     </button>
-                    <div class="section-body">
+                    <div class="section-body" id="sectionLifestyleBody">
                         <div class="section-body-inner">
                             <div class="grid" style="margin-top:14px">
                                 <select id="sleep_duration">
@@ -131,15 +131,15 @@
 
                 <!-- 4. Living & Support -->
                 <section class="section-panel collapsed" id="sectionSupport">
-                    <button type="button" class="section-toggle" onclick="toggleSection('sectionSupport')">
-                        <div class="section-heading" style="margin-bottom:0">
-                            <p class="section-label">Support</p>
-                            <h3>Living &amp; Support</h3>
-                            <p>Shared only to shape the guidance you receive later.</p>
-                        </div>
-                        <span class="toggle-icon">&#9662;</span>
+                    <button type="button" class="section-toggle" onclick="toggleSection('sectionSupport')" aria-expanded="false" aria-controls="sectionSupportBody">
+                        <span class="section-toggle-copy">
+                            <span class="section-label">Support</span>
+                            <span class="section-title">Living &amp; Support</span>
+                            <span class="section-description">Shared only to shape the guidance you receive later.</span>
+                        </span>
+                        <span class="toggle-icon" aria-hidden="true">&#9662;</span>
                     </button>
-                    <div class="section-body">
+                    <div class="section-body" id="sectionSupportBody">
                         <div class="section-body-inner">
                             <div class="grid" style="margin-top:14px">
                                 <select id="living_situation">
@@ -170,28 +170,28 @@
                     <div class="stressor-chips" id="stressorChips">
                         <label class="stressor-chip">
                             <input type="checkbox" value="Academic pressure">
-                            <span class="chip-dot"></span>
-                            Academic Pressure
+                            <span class="chip-check" aria-hidden="true"></span>
+                            <span class="chip-text">Academic Pressure</span>
                         </label>
                         <label class="stressor-chip">
                             <input type="checkbox" value="Career uncertainty">
-                            <span class="chip-dot"></span>
-                            Career Uncertainty
+                            <span class="chip-check" aria-hidden="true"></span>
+                            <span class="chip-text">Career Uncertainty</span>
                         </label>
                         <label class="stressor-chip">
                             <input type="checkbox" value="Financial concerns">
-                            <span class="chip-dot"></span>
-                            Financial Concerns
+                            <span class="chip-check" aria-hidden="true"></span>
+                            <span class="chip-text">Financial Concerns</span>
                         </label>
                         <label class="stressor-chip">
                             <input type="checkbox" value="Family issues">
-                            <span class="chip-dot"></span>
-                            Family Issues
+                            <span class="chip-check" aria-hidden="true"></span>
+                            <span class="chip-text">Family Issues</span>
                         </label>
                         <label class="stressor-chip">
                             <input type="checkbox" value="Health concerns">
-                            <span class="chip-dot"></span>
-                            Health Concerns
+                            <span class="chip-check" aria-hidden="true"></span>
+                            <span class="chip-text">Health Concerns</span>
                         </label>
                     </div>
                 </section>
