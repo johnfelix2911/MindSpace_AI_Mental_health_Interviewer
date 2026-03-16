@@ -5,6 +5,19 @@ function toggleSection(sectionId) {
     section.classList.toggle('collapsed');
 }
 
+/* ── Stressor chip multi-select ────────────────────────────── */
+function initStressorChips() {
+    const chips = document.querySelectorAll('.stressor-chip');
+    chips.forEach(chip => {
+        const checkbox = chip.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+            checkbox.addEventListener('change', function() {
+                chip.classList.toggle('active', this.checked);
+            });
+        }
+    });
+}
+
 /* ── Form submission (preserved logic) ─────────────────────── */
 async function continueInterview() {
     const statusMsg = document.getElementById('statusMessage');
@@ -16,12 +29,9 @@ async function continueInterview() {
 
     try {
         const stressors = [];
-        document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+        document.querySelectorAll('.stressor-chip input[type="checkbox"]:checked').forEach(cb => {
             stressors.push(cb.value);
         });
-
-        const assessmentRadio = document.querySelector('input[name="assessment_type"]:checked');
-        const assessmentType = assessmentRadio ? assessmentRadio.value : 'all';
 
         const formData = {
             name: document.getElementById('name')?.value || null,
@@ -37,7 +47,6 @@ async function continueInterview() {
             living_situation: document.getElementById('living_situation')?.value || null,
             support_system: document.getElementById('support_system')?.value || null,
             stressors: stressors,
-            assessment_type: assessmentType
         };
 
         const response = await fetch('/submit_demographics', {
@@ -74,3 +83,8 @@ async function continueInterview() {
         statusMsg.style.color = '#ff6f7a';
     }
 }
+
+/* ── Init ──────────────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+    initStressorChips();
+});

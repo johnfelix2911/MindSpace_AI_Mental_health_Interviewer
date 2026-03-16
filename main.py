@@ -221,11 +221,16 @@ async def submit_demographics(data: DemographicData):
 # ── Interview flow ────────────────────────────────────────────
 
 @app.get("/start")
-async def start_interview(llm_mode: str = "gemini"):
-    print(f"\n[ROUTE] GET /start  llm_mode={llm_mode}")
+async def start_interview(llm_mode: str = "gemini", assessment_type: str = None):
+    print(f"\n[ROUTE] GET /start  llm_mode={llm_mode}  assessment_type={assessment_type}")
     sid, session = get_or_create_default()
     demographics    = session.get("demographics", {})
+
+    # If assessment_type provided in query, override the session value
+    if assessment_type and assessment_type in ("depression", "anxiety", "stress", "all"):
+        session["assessment_type"] = assessment_type
     assessment_type = session.get("assessment_type", "all")
+
     total_questions = TOTAL_QUESTIONS
 
     # Validate

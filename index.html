@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindSpace - Mental Health AI Interviewer</title>
+    <title>MindSpace - Interview</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
@@ -11,8 +11,8 @@
         /* ── Design Tokens ───────────────────────────────────── */
         :root {
             --bg-main: #08142a;
-            --bg-panel: rgba(255,255,255,0.04);
-            --bg-panel-strong: rgba(255,255,255,0.07);
+            --panel-bg: rgba(255,255,255,0.04);
+            --panel-strong: rgba(255,255,255,0.07);
             --border-soft: rgba(255,255,255,0.08);
             --accent-blue: #5e7bff;
             --accent-teal: #2ac6b8;
@@ -36,6 +36,17 @@
                 linear-gradient(170deg, #040c1a 0%, #08142a 42%, #06101e 100%);
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Fade-in ────────────────────────────────────────── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.35s ease;
         }
 
         /* ── 3-Column Layout ─────────────────────────────────── */
@@ -125,12 +136,13 @@
             padding: 16px;
             border-radius: 14px;
             border: 1px solid var(--border-soft);
-            background: var(--bg-panel);
+            background: var(--panel-bg);
             backdrop-filter: blur(10px);
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
         .sidebar-card:hover {
             border-color: rgba(255,255,255,0.12);
+            transform: translateY(-2px);
         }
         .sidebar-card-title {
             font-size: 10px;
@@ -168,52 +180,6 @@
         .sidebar-brand-sub {
             font-size: 11px;
             color: var(--text-dim);
-        }
-
-        /* LLM selector in sidebar */
-        .llm-options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .llm-option { position: relative; }
-        .llm-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0; height: 0;
-        }
-        .llm-option-card {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--border-soft);
-            background: rgba(255,255,255,0.02);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .llm-option input[type="radio"]:checked + .llm-option-card {
-            border-color: var(--accent-blue);
-            background: rgba(94,123,255,0.1);
-            box-shadow: 0 0 0 1px rgba(94,123,255,0.2);
-        }
-        .llm-option-card:hover:not(.disabled) {
-            border-color: rgba(255,255,255,0.16);
-            background: rgba(255,255,255,0.04);
-        }
-        .llm-option-card.disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-        .llm-option-icon { font-size: 16px; flex-shrink: 0; }
-        .llm-option-label { font-size: 12px; font-weight: 600; }
-        .llm-option-desc { font-size: 10px; color: var(--text-dim); }
-        .llm-option-info {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
         }
 
         /* Session info items */
@@ -335,7 +301,7 @@
             letter-spacing: 0.06em;
             text-transform: uppercase;
             flex-shrink: 0;
-            background: var(--bg-panel-strong);
+            background: var(--panel-strong);
             border: 1px solid var(--border-soft);
         }
         .message-bubble {
@@ -401,7 +367,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 16px;
             padding: 16px 24px;
             border-top: 1px solid var(--border-soft);
             background: rgba(8,20,42,0.6);
@@ -418,7 +384,7 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             font-family: 'Sora', sans-serif;
         }
         .btn-start {
@@ -430,48 +396,24 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 18px rgba(0,0,0,0.35);
         }
-        .btn-record {
-            background: var(--bg-panel-strong);
-            color: var(--text-main);
-            border: 1px solid var(--border-soft);
-        }
-        .btn-record:hover:not(:disabled) {
-            border-color: var(--accent-blue);
-            background: rgba(94,123,255,0.1);
-        }
-        .btn-stop {
-            background: var(--danger);
-            color: white;
-        }
-        .btn-stop.recording {
-            animation: recordPulse 1.5s ease-in-out infinite;
-        }
-        @keyframes recordPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,111,122,0.3); } 50% { box-shadow: 0 0 0 10px rgba(255,111,122,0); } }
-        .btn-exit {
-            background: transparent;
-            color: var(--text-dim);
-            border: 1px solid var(--border-soft);
-            padding: 10px 14px;
-            font-size: 12px;
-        }
-        .btn-exit:hover { border-color: var(--danger); color: var(--danger); }
         .btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
         .btn:active:not(:disabled) { transform: scale(0.97); }
 
-        /* Mic button (large circle) */
+        /* ── Central Mic Button ──────────────────────────────── */
         .mic-button {
-            width: 56px; height: 56px;
+            width: 72px; height: 72px;
             border-radius: 50%;
             border: none;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
             color: white;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
             display: none;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             box-shadow: 0 6px 20px rgba(94,123,255,0.3);
+            position: relative;
         }
         .mic-button:hover:not(:disabled) {
             transform: translateY(-2px);
@@ -479,10 +421,37 @@
         }
         .mic-button.recording {
             background: linear-gradient(135deg, var(--danger), #ff8a8a);
-            box-shadow: 0 6px 20px rgba(255,111,122,0.3);
+            box-shadow: 0 0 0 8px rgba(94,123,255,0.15);
             animation: micPulse 1.5s ease-in-out infinite;
         }
-        @keyframes micPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,111,122,0.25); } 50% { box-shadow: 0 0 0 14px rgba(255,111,122,0); } }
+        @keyframes micPulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(255,111,122,0.25); }
+            50% { box-shadow: 0 0 0 14px rgba(255,111,122,0); }
+        }
+        .mic-button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .mic-button .mic-icon { font-size: 28px; line-height: 1; }
+
+        /* ── Exit Interview Button ───────────────────────────── */
+        .btn-exit-interview {
+            background: rgba(255, 111, 122, 0.15);
+            border: 1px solid rgba(255, 111, 122, 0.4);
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: var(--danger);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Sora', sans-serif;
+        }
+        .btn-exit-interview:hover {
+            background: rgba(255, 111, 122, 0.25);
+            border-color: var(--danger);
+            transform: translateY(-1px);
+        }
 
         /* ── Right Sidebar ───────────────────────────────────── */
         .sidebar-right {
@@ -507,7 +476,7 @@
             gap: 8px;
             font-size: 12px;
             color: var(--text-dim);
-            transition: color 0.2s ease;
+            transition: color 0.15s ease;
         }
         .step-item.active { color: var(--text-main); }
         .step-item.done { color: var(--accent-teal); }
@@ -517,7 +486,7 @@
             background: rgba(255,255,255,0.1);
             border: 1.5px solid rgba(255,255,255,0.15);
             flex-shrink: 0;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
         .step-item.active .step-dot {
             background: var(--accent-blue);
@@ -541,7 +510,7 @@
             background: rgba(255,255,255,0.02);
             border: 1px solid var(--border-soft);
             text-align: center;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
         .emotion-label { font-size: 10px; color: var(--text-dim); display: block; margin-bottom: 2px; }
         .emotion-value { font-size: 12px; font-weight: 700; color: var(--text-muted); }
@@ -589,14 +558,14 @@
         .modal p { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
         .modal-btns { display: flex; gap: 10px; justify-content: center; }
         .btn-cancel {
-            background: var(--bg-panel-strong);
+            background: var(--panel-strong);
             color: var(--text-main);
             border: 1px solid var(--border-soft);
         }
         .btn-cancel:hover { border-color: rgba(255,255,255,0.16); }
         .btn-confirm-exit { background: var(--danger); color: white; }
 
-        /* Results overlay */
+        /* ── Results overlay ──────────────────────────────────── */
         .results-overlay {
             background: rgba(2,6,23,0.92);
             backdrop-filter: blur(14px);
@@ -609,7 +578,7 @@
         }
         .results-card {
             border-radius: 18px;
-            padding: 28px;
+            padding: 32px;
             max-width: 900px;
             width: 100%;
             margin: auto;
@@ -620,6 +589,7 @@
         .results-loading { display: none; text-align: center; padding: 48px 20px; }
         .results-loading.active { display: block; }
         .rl-spinner { width: 40px; height: 40px; border: 3px solid rgba(94,123,255,0.15); border-top-color: var(--accent-blue); border-radius: 50%; margin: 0 auto 12px; animation: spin 0.8s linear infinite; }
+
         .results-kicker {
             display: inline-flex;
             padding: 6px 10px;
@@ -653,6 +623,69 @@
             color: var(--warning);
             font-weight: 700;
         }
+
+        /* ── Primary Score Card ──────────────────────────────── */
+        .primary-score-card {
+            display: none;
+            padding: 32px;
+            border-radius: 18px;
+            border: 1px solid rgba(94,123,255,0.25);
+            background: linear-gradient(135deg, rgba(94,123,255,0.08), rgba(42,198,184,0.04));
+            backdrop-filter: blur(10px);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .primary-score-number {
+            font-family: 'Sora', sans-serif;
+            font-size: 48px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .primary-score-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+        /* Severity indicator bar */
+        .severity-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 0 auto;
+            max-width: 360px;
+        }
+        .severity-bar-segment {
+            flex: 1;
+            height: 6px;
+            position: relative;
+        }
+        .severity-bar-segment:first-child { border-radius: 999px 0 0 999px; }
+        .severity-bar-segment:last-child { border-radius: 0 999px 999px 0; }
+        .severity-bar-segment.seg-low { background: rgba(65,214,164,0.3); }
+        .severity-bar-segment.seg-moderate { background: rgba(243,186,100,0.3); }
+        .severity-bar-segment.seg-high { background: rgba(255,111,122,0.3); }
+        .severity-bar-segment.active.seg-low { background: var(--success); }
+        .severity-bar-segment.active.seg-moderate { background: var(--warning); }
+        .severity-bar-segment.active.seg-high { background: var(--danger); }
+        .severity-bar-labels {
+            display: flex;
+            justify-content: space-between;
+            max-width: 360px;
+            margin: 6px auto 0;
+        }
+        .severity-bar-labels span {
+            font-size: 11px;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        /* ── All scores row ──────────────────────────────────── */
         .score-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -663,7 +696,12 @@
             padding: 16px;
             border-radius: 14px;
             border: 1px solid var(--border-soft);
-            background: var(--bg-panel);
+            background: var(--panel-bg);
+            transition: all 0.15s ease;
+        }
+        .score-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
         .score-circle {
             width: 80px; height: 80px;
@@ -707,7 +745,7 @@
             padding: 18px;
             border-radius: 14px;
             border: 1px solid var(--border-soft);
-            background: var(--bg-panel);
+            background: var(--panel-bg);
         }
         .rec-header {
             display: flex;
@@ -742,7 +780,9 @@
             font-weight: 700;
             cursor: pointer;
             font-family: inherit;
+            transition: all 0.15s ease;
         }
+        .accordion-trigger:hover { background: rgba(255,255,255,0.02); }
         .accordion-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.28s ease; }
         .accordion-panel.open { grid-template-rows: 1fr; }
         .accordion-panel-inner { overflow: hidden; }
@@ -750,7 +790,7 @@
         .recommendation-list li, .resources-list li {
             padding: 10px 12px;
             margin-top: 8px;
-            background: var(--bg-panel-strong);
+            background: var(--panel-strong);
             border-radius: 8px;
             font-size: 12px;
             color: var(--text-muted);
@@ -763,7 +803,7 @@
         @keyframes itemFade { to { opacity: 1; } }
 
         .encouragement { font-size: 13px; line-height: 1.7; color: var(--text-main); margin-bottom: 10px; }
-        .support-note { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: var(--bg-panel); border: 1px solid var(--border-soft); font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+        .support-note { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: var(--panel-bg); border: 1px solid var(--border-soft); font-size: 12px; color: var(--text-muted); line-height: 1.6; }
         .disclaimer { font-size: 11px; color: var(--text-dim); margin-top: 14px; line-height: 1.6; }
         .btn-new-session {
             width: 100%;
@@ -787,6 +827,306 @@
             color: #b8c5ff;
         }
 
+        /* ── Per-mode Personalized Recommendations ──────────── */
+        .per-mode-recs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+            margin: 20px 0 8px;
+        }
+        .mode-rec-card {
+            border-radius: 14px;
+            border: 1px solid var(--border-soft);
+            background: var(--panel-bg);
+            overflow: hidden;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .mode-rec-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .mode-rec-card.depression { border-top: 3px solid var(--accent-blue); }
+        .mode-rec-card.anxiety    { border-top: 3px solid var(--warning); }
+        .mode-rec-card.stress     { border-top: 3px solid var(--danger); }
+        .mode-rec-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px 10px;
+            gap: 8px;
+        }
+        .mode-rec-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: capitalize;
+        }
+        .mode-rec-severity {
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: capitalize;
+            letter-spacing: 0.05em;
+        }
+        .mode-rec-severity.minimal  { background: rgba(65,214,164,0.12); color: var(--success); }
+        .mode-rec-severity.mild     { background: rgba(243,186,100,0.12); color: var(--warning); }
+        .mode-rec-severity.moderate { background: rgba(249,115,22,0.12); color: #f97316; }
+        .mode-rec-severity.severe   { background: rgba(255,111,122,0.12); color: var(--danger); }
+        .mode-rec-score {
+            font-size: 11px;
+            color: var(--text-dim);
+            padding: 0 16px 10px;
+        }
+        .mode-rec-tips {
+            list-style: none;
+            margin: 0;
+            padding: 0 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .mode-rec-tips li {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .mode-rec-tips li::before {
+            content: '›';
+            color: var(--accent-blue);
+            font-size: 16px;
+            line-height: 1.1;
+            flex-shrink: 0;
+        }
+        .mode-rec-card.anxiety  .mode-rec-tips li::before { color: var(--warning); }
+        .mode-rec-card.stress   .mode-rec-tips li::before { color: var(--danger); }
+
+        /* ── Severity Pie Charts Row ─────────────────────────── */
+        .severity-charts-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin: 28px 0 20px;
+        }
+        .severity-chart-card {
+            width: 260px;
+            padding: 28px 24px 22px;
+            border-radius: 18px;
+            border: 1px solid var(--border-soft);
+            background: var(--panel-bg);
+            text-align: center;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+        .severity-chart-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+        }
+        .severity-chart-card.depression {
+            border-color: rgba(94,123,255,0.35);
+            background: linear-gradient(160deg, rgba(94,123,255,0.07), rgba(8,20,42,0.5));
+        }
+        .severity-chart-card.anxiety {
+            border-color: rgba(243,186,100,0.35);
+            background: linear-gradient(160deg, rgba(243,186,100,0.07), rgba(8,20,42,0.5));
+        }
+        .severity-chart-card.stress {
+            border-color: rgba(255,111,122,0.35);
+            background: linear-gradient(160deg, rgba(255,111,122,0.07), rgba(8,20,42,0.5));
+        }
+        .severity-chart-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+        .pie-chart-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 18px;
+        }
+        .pie-chart {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transform: rotate(-90deg);
+        }
+        .pie-chart-inner {
+            position: absolute;
+            inset: 17px;
+            border-radius: 50%;
+            background: #0a1a30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(90deg);
+        }
+        .pie-score-value {
+            font-family: 'Sora', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1;
+        }
+        .pie-score-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .severity-legend {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .legend-dot.low { background: var(--success); }
+        .legend-dot.mild { background: var(--warning); }
+        .legend-dot.severe { background: var(--danger); }
+        @keyframes pieGrow {
+            from { stroke-dasharray: 0 100; }
+        }
+
+        /* ── Pre-Interview Setup Panel ───────────────────────── */
+        .pre-interview-panel {
+            margin: 0 24px 8px;
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(94,123,255,0.4);
+            background: rgba(94,123,255,0.07);
+            box-shadow: 0 0 0 1px rgba(94,123,255,0.08), 0 6px 20px rgba(94,123,255,0.1);
+        }
+        .pi-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .pi-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: rgba(94,123,255,0.2);
+            border: 1px solid rgba(94,123,255,0.35);
+            color: #8fa8ff;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .pi-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .pi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .pi-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #7690b1;
+            margin-bottom: 8px;
+        }
+        .pi-llm-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .pi-llm-opt { position: relative; }
+        .pi-llm-opt input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+        .pi-llm-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .pi-llm-opt input[type="radio"]:checked + .pi-llm-card {
+            border-color: var(--accent-blue);
+            background: rgba(94,123,255,0.18);
+            box-shadow: 0 0 0 1px rgba(94,123,255,0.15);
+        }
+        .pi-llm-card:hover { border-color: rgba(255,255,255,0.16); background: rgba(255,255,255,0.05); }
+        .pi-llm-card.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+        .pi-llm-icon { font-size: 16px; margin-bottom: 2px; }
+        .pi-llm-label { font-size: 12px; font-weight: 600; color: var(--text-main); }
+        .pi-llm-desc { font-size: 10px; color: #7690b1; }
+        .pi-status-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; margin-right: 4px; }
+        .pi-status-dot.ready { background: var(--success); }
+        .pi-status-dot.unavailable { background: var(--danger); }
+        .pi-assessment-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+        .pi-assess-opt { position: relative; }
+        .pi-assess-opt input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+        .pi-assess-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.15s ease;
+            color: rgba(230,236,255,0.65);
+            line-height: 1.3;
+        }
+        .pi-assess-opt input[type="radio"]:checked + .pi-assess-card {
+            border-color: var(--accent-blue);
+            background: rgba(94,123,255,0.2);
+            color: var(--text-main);
+        }
+        .pi-assess-card:hover { border-color: rgba(94,123,255,0.3); }
+        .pi-assess-card.featured { border-color: rgba(42,198,184,0.25); }
+        @media (max-width: 700px) {
+            .pi-grid { grid-template-columns: 1fr; }
+            .pre-interview-panel { margin: 0 14px 8px; }
+            .pi-assessment-options { grid-template-columns: repeat(2, 1fr); }
+        }
+
         /* ── Responsive ──────────────────────────────────────── */
         @media (max-width: 1100px) {
             .app-layout {
@@ -802,6 +1142,8 @@
             .message-bubble { max-width: 92%; font-size: 13px; }
             .controls-bar { padding: 12px 14px; }
             .results-card { padding: 20px 16px; }
+            .mic-button { width: 60px; height: 60px; font-size: 22px; }
+            .primary-score-number { font-size: 36px; }
         }
     </style>
 </head>
@@ -820,7 +1162,6 @@
         </div>
         <div class="top-bar-right">
             <span class="session-timer" id="sessionTimer">00:00</span>
-            <button class="btn btn-exit" id="exitBtn" onclick="exitSession()" style="display:none;">End</button>
         </div>
     </header>
 
@@ -833,32 +1174,6 @@
                     <div class="sidebar-brand-text">MindSpace</div>
                     <div class="sidebar-brand-sub">AI Mental Health</div>
                 </div>
-            </div>
-        </div>
-
-        <div class="sidebar-card" id="llmSelector">
-            <div class="sidebar-card-title">AI Engine</div>
-            <div class="llm-options">
-                <label class="llm-option">
-                    <input type="radio" name="llm_mode" value="gemini" id="llmGemini" checked>
-                    <div class="llm-option-card" id="llmGeminiCard">
-                        <span class="llm-option-icon">&#9729;</span>
-                        <div class="llm-option-info">
-                            <span class="llm-option-label" id="llmGeminiLabel">Gemini API</span>
-                            <span class="llm-option-desc" id="llmGeminiDesc">Checking...</span>
-                        </div>
-                    </div>
-                </label>
-                <label class="llm-option">
-                    <input type="radio" name="llm_mode" value="local" id="llmLocal">
-                    <div class="llm-option-card" id="llmLocalCard">
-                        <span class="llm-option-icon">&#128187;</span>
-                        <div class="llm-option-info">
-                            <span class="llm-option-label" id="llmLocalLabel">Local LLM</span>
-                            <span class="llm-option-desc" id="llmLocalDesc">Checking...</span>
-                        </div>
-                    </div>
-                </label>
             </div>
         </div>
 
@@ -876,6 +1191,16 @@
                 <div class="session-info-item">
                     <span class="info-dot teal"></span>
                     Instant report
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-card" id="llmInfoCard">
+            <div class="sidebar-card-title">AI Engine</div>
+            <div class="session-info-list">
+                <div class="session-info-item" id="llmEngineInfo">
+                    <span class="info-dot blue"></span>
+                    <span id="llmEngineLabel">Loading...</span>
                 </div>
             </div>
         </div>
@@ -913,11 +1238,68 @@
             <span class="transcript-text" id="transcriptionText">Listening...</span>
         </div>
 
+        <!-- ─── Pre-Interview Setup (hidden after start) ─────── -->
+        <div class="pre-interview-panel" id="preInterviewPanel">
+            <div class="pi-header">
+                <span class="pi-badge">Configure before starting</span>
+                <span class="pi-title">Session Settings</span>
+            </div>
+            <div class="pi-grid">
+                <!-- LLM Engine -->
+                <div class="pi-section">
+                    <div class="pi-section-label">AI Engine</div>
+                    <div class="pi-llm-options">
+                        <label class="pi-llm-opt">
+                            <input type="radio" name="llm_mode" value="gemini" id="piLlmGemini" checked>
+                            <span class="pi-llm-card" id="piLlmGeminiCard">
+                                <span class="pi-llm-icon">&#9729;</span>
+                                <span class="pi-llm-label">Gemini API</span>
+                                <span class="pi-llm-desc" id="piLlmGeminiDesc">Checking...</span>
+                            </span>
+                        </label>
+                        <label class="pi-llm-opt">
+                            <input type="radio" name="llm_mode" value="local" id="piLlmLocal">
+                            <span class="pi-llm-card" id="piLlmLocalCard">
+                                <span class="pi-llm-icon">&#128187;</span>
+                                <span class="pi-llm-label">Local LLM</span>
+                                <span class="pi-llm-desc" id="piLlmLocalDesc">Checking...</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <!-- Assessment Type -->
+                <div class="pi-section">
+                    <div class="pi-section-label">Assessment Type</div>
+                    <div class="pi-assessment-options">
+                        <label class="pi-assess-opt">
+                            <input type="radio" name="assessment_type" value="depression">
+                            <span class="pi-assess-card">Depression</span>
+                        </label>
+                        <label class="pi-assess-opt">
+                            <input type="radio" name="assessment_type" value="anxiety">
+                            <span class="pi-assess-card">Anxiety</span>
+                        </label>
+                        <label class="pi-assess-opt">
+                            <input type="radio" name="assessment_type" value="stress">
+                            <span class="pi-assess-card">Stress</span>
+                        </label>
+                        <label class="pi-assess-opt">
+                            <input type="radio" name="assessment_type" value="all" checked>
+                            <span class="pi-assess-card featured">Complete</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="controls-bar">
             <button class="btn btn-start" id="startBtn" onclick="startInterview()">Start Interview</button>
-            <button class="mic-button" id="micBtn" onclick="toggleRecording()" disabled style="display:none;" title="Toggle recording">&#127908;</button>
-            <button class="btn btn-record" id="recordBtn" onclick="startRecording()" disabled style="display:none;">Record Answer</button>
-            <button class="btn btn-stop" id="stopBtn" onclick="stopRecording()" disabled style="display:none;">Stop &amp; Send</button>
+            <button class="mic-button" id="micBtn" onclick="toggleRecording()" disabled style="display:none;" title="Click to record / stop">
+                <span class="mic-icon">&#127908;</span>
+            </button>
+            <button class="btn-exit-interview" id="exitInterviewBtn" onclick="exitSession()" style="display:none;">
+                Exit Interview
+            </button>
         </div>
     </main>
 
@@ -969,10 +1351,10 @@
 <div class="modal-overlay" id="exitModalOverlay">
     <div class="modal">
         <h3>End session?</h3>
-        <p>Your current progress will be cleared and a fresh interview will begin.</p>
+        <p>Your current progress will be cleared and you will return to the intake page.</p>
         <div class="modal-btns">
             <button class="btn btn-cancel" onclick="cancelExit()">Cancel</button>
-            <button class="btn btn-confirm-exit" onclick="confirmNewSession()">Start New Session</button>
+            <button class="btn btn-confirm-exit" onclick="confirmExit()">End Session</button>
         </div>
     </div>
 </div>
@@ -990,8 +1372,32 @@
             <p class="results-subtitle">A cleaner view of your screening snapshot with organized next steps.</p>
             <p class="results-info" id="resultsInfo"></p>
             <div class="demo-warning" id="demoWarning">Demo mode is active. These scores are illustrative only.</div>
-            <div class="score-row" id="scoreRow"></div>
+
+            <!-- Severity Pie Charts — center-stage visualization -->
+            <div class="severity-charts-row" id="severityChartsRow"></div>
+
+            <!-- Primary Score Card — hidden -->
+            <div class="primary-score-card" id="primaryScoreCard" style="display:none">
+                <div class="primary-score-number" id="primaryScoreNumber">0</div>
+                <div class="primary-score-label" id="primaryScoreLabel">Severity Score</div>
+                <div class="severity-bar">
+                    <div class="severity-bar-segment seg-low" id="segLow"></div>
+                    <div class="severity-bar-segment seg-moderate" id="segModerate"></div>
+                    <div class="severity-bar-segment seg-high" id="segHigh"></div>
+                </div>
+                <div class="severity-bar-labels">
+                    <span>Low</span>
+                    <span>Moderate</span>
+                    <span>High</span>
+                </div>
+            </div>
+
+            <!-- Score circles row (hidden — replaced by pie charts above) -->
+            <div class="score-row" id="scoreRow" style="display:none"></div>
             <div class="severity-badges" id="severityBadges"></div>
+
+            <!-- Per-mode personalized recommendations -->
+            <div class="per-mode-recs" id="perModeRecs"></div>
             <div class="recommendation-section" id="recommendationSection" style="display:none">
                 <div class="rec-main">
                     <div class="rec-header">
@@ -1014,7 +1420,7 @@
                 </div>
             </div>
             <p class="disclaimer">This screening tool is not a clinical diagnosis. If you are in crisis, please contact a mental health professional or call a helpline immediately.</p>
-            <button class="btn btn-new-session" onclick="confirmNewSession()">Start New Session</button>
+            <button class="btn btn-new-session" onclick="startNewSession()">Start New Session</button>
         </div>
     </div>
 </div>
@@ -1028,18 +1434,15 @@ let interviewStarted = false;
 let totalQuestions = 5;
 let currentQuestion = 0;
 let liveTranscript = '';
-let llmAvailable = false;
-let localLlmAvailable = false;
 let sessionSeconds = 0;
 let timerInterval = null;
+let isRecording = false;
 
 /* ── DOM refs ──────────────────────────────────────────────── */
 const chatContainer = document.getElementById('chatContainer');
 const startBtn = document.getElementById('startBtn');
-const recordBtn = document.getElementById('recordBtn');
-const stopBtn = document.getElementById('stopBtn');
 const micBtn = document.getElementById('micBtn');
-const exitBtn = document.getElementById('exitBtn');
+const exitInterviewBtn = document.getElementById('exitInterviewBtn');
 const transcriptionBox = document.getElementById('transcriptionBox');
 const transcriptionText = document.getElementById('transcriptionText');
 const progressFill = document.getElementById('progressFill');
@@ -1047,6 +1450,51 @@ const statusText = document.getElementById('statusText');
 const resultsOverlay = document.getElementById('resultsOverlay');
 const assessmentBadge = document.getElementById('assessmentBadge');
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+/* ── Get selections from pre-interview panel ─────────────── */
+function getSelectedLLMMode() {
+    return document.querySelector('input[name="llm_mode"]:checked')?.value || 'gemini';
+}
+function getSelectedAssessmentType() {
+    return document.querySelector('input[name="assessment_type"]:checked')?.value || 'all';
+}
+
+/* ── LLM availability check (pre-interview panel) ─────────── */
+async function checkSetupStatus() {
+    try {
+        const r = await fetch('/llm_status');
+        const d = await r.json();
+        const desc = document.getElementById('piLlmGeminiDesc');
+        const card = document.getElementById('piLlmGeminiCard');
+        if (d.llm_available) {
+            desc.innerHTML = '<span class="pi-status-dot ready"></span>Cloud (ready)';
+        } else {
+            desc.innerHTML = '<span class="pi-status-dot unavailable"></span>API key not set';
+            card.classList.add('disabled');
+            document.getElementById('piLlmGemini').disabled = true;
+        }
+    } catch (e) { console.error(e); }
+    try {
+        const r = await fetch('/local_llm_status');
+        const d = await r.json();
+        const desc = document.getElementById('piLlmLocalDesc');
+        const card = document.getElementById('piLlmLocalCard');
+        if (d.local_llm_available) {
+            desc.innerHTML = '<span class="pi-status-dot ready"></span>On-device (ready)';
+        } else {
+            desc.innerHTML = '<span class="pi-status-dot unavailable"></span>Not downloaded';
+            card.classList.add('disabled');
+            document.getElementById('piLlmLocal').disabled = true;
+        }
+    } catch (e) { console.error(e); }
+    const gemini = document.getElementById('piLlmGemini');
+    const local = document.getElementById('piLlmLocal');
+    if (gemini && gemini.disabled && local && !local.disabled) {
+        local.checked = true;
+    }
+    // Update sidebar to reflect current selection
+    displayLLMInfo();
+}
 
 /* ── Session timer ─────────────────────────────────────────── */
 function startTimer() {
@@ -1146,56 +1594,95 @@ function initializeAccordions() {
 function showBtn(btn) { btn.style.display = 'inline-flex'; btn.disabled = false; }
 function hideBtn(btn) { btn.style.display = 'none'; btn.disabled = true; }
 
-/* ── LLM status check ─────────────────────────────────────── */
-async function checkLLMStatus() {
-    try {
-        const r = await fetch('/llm_status');
-        const d = await r.json();
-        llmAvailable = d.llm_available;
-        const geminiDesc = document.getElementById('llmGeminiDesc');
-        const geminiCard = document.getElementById('llmGeminiCard');
-        if (llmAvailable) {
-            geminiDesc.textContent = 'Cloud (ready)';
-        } else {
-            geminiDesc.textContent = 'API key not set';
-            geminiCard.classList.add('disabled');
-            document.getElementById('llmGemini').disabled = true;
-        }
-    } catch (e) { console.error(e); }
-    try {
-        const r = await fetch('/local_llm_status');
-        const d = await r.json();
-        localLlmAvailable = d.local_llm_available;
-        const localDesc = document.getElementById('llmLocalDesc');
-        const localCard = document.getElementById('llmLocalCard');
-        if (localLlmAvailable) {
-            localDesc.textContent = 'On-device (ready)';
-        } else {
-            localDesc.textContent = 'Not downloaded';
-            localCard.classList.add('disabled');
-            document.getElementById('llmLocal').disabled = true;
-        }
-    } catch (e) { console.error(e); }
-    if (!llmAvailable && localLlmAvailable) {
-        document.getElementById('llmLocal').checked = true;
+/* ── Display LLM engine info in sidebar ──────────────────── */
+function displayLLMInfo() {
+    const mode = getSelectedLLMMode();
+    const label = document.getElementById('llmEngineLabel');
+    if (mode === 'local') {
+        label.textContent = 'Local LLM (on-device)';
+    } else {
+        label.textContent = 'Gemini API (cloud)';
     }
+}
+
+/* ── Attach LLM mode change listener ─────────────────────── */
+function attachLLMModeListeners() {
+    const radios = document.querySelectorAll('input[name="llm_mode"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            displayLLMInfo();
+        });
+    });
+}
+
+/* ── Create severity pie chart HTML ──────────────────────── */
+function createSeverityPieChart(key, score, label) {
+    const isStress = key === 'stress';
+    const maxVal = isStress ? 1 : 24;
+    const pct = Math.min((score / maxVal) * 100, 100);
+    const displayVal = isStress ? (score * 100).toFixed(0) + '%' : score.toFixed(1);
+
+    // Determine severity level and colors
+    let severityLevel = 'low';
+    let activeColor = 'var(--success)';
+    if (pct > 66) {
+        severityLevel = 'severe';
+        activeColor = 'var(--danger)';
+    } else if (pct > 33) {
+        severityLevel = 'mild';
+        activeColor = 'var(--warning)';
+    }
+
+    const card = document.createElement('div');
+    card.className = `severity-chart-card ${key}`;
+
+    // SVG pie chart with animation
+    const circumference = 2 * Math.PI * 15.9155;
+    const dashArray = (pct / 100) * circumference;
+
+    card.innerHTML = `
+        <div class="severity-chart-title">${key.charAt(0).toUpperCase() + key.slice(1)}</div>
+        <div class="pie-chart-container">
+            <svg class="pie-chart" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2.5"/>
+                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="${activeColor}" stroke-width="2.5"
+                    stroke-dasharray="${dashArray} ${circumference}"
+                    stroke-linecap="round"
+                    style="animation: pieGrow 1s ease-out forwards;"/>
+            </svg>
+            <div class="pie-chart-inner">
+                <span class="pie-score-value">${displayVal}</span>
+                <span class="pie-score-label">${label || severityLevel}</span>
+            </div>
+        </div>
+        <div class="severity-legend">
+            <div class="legend-item"><span class="legend-dot low"></span>Low</div>
+            <div class="legend-item"><span class="legend-dot mild"></span>Mild</div>
+            <div class="legend-item"><span class="legend-dot severe"></span>Severe</div>
+        </div>
+    `;
+    return card;
 }
 
 /* ── Interview flow ────────────────────────────────────────── */
 async function startInterview() {
     try {
-        const selectedMode = document.querySelector('input[name="llm_mode"]:checked');
-        const llmMode = selectedMode ? selectedMode.value : 'gemini';
+        const llmMode = getSelectedLLMMode();
+        const assessmentType = getSelectedAssessmentType();
         startBtn.disabled = true;
         startBtn.innerHTML = '<span class="mini-spinner"></span> Starting...';
         showLoadingBar('Personalizing your interview...');
-        document.getElementById('llmSelector').style.display = 'none';
-        const r = await fetch(`/start?llm_mode=${llmMode}`);
+        const r = await fetch(`/start?llm_mode=${llmMode}&assessment_type=${assessmentType}`);
         const data = await r.json();
         hideLoadingBar();
         totalQuestions = data.total_questions || 5;
         currentQuestion = 1;
         interviewStarted = true;
+
+        // Hide the pre-interview setup panel
+        const panel = document.getElementById('preInterviewPanel');
+        if (panel) panel.style.display = 'none';
+
         startTimer();
         updateProgress();
         updateStatus(`Question ${currentQuestion} of ${totalQuestions}`);
@@ -1208,17 +1695,14 @@ async function startInterview() {
         addMessage(data.question, true);
         hideBtn(startBtn);
         showBtn(micBtn); micBtn.disabled = false;
-        showBtn(recordBtn);
-        exitBtn.style.display = 'inline-flex';
+        showBtn(exitInterviewBtn);
     } catch (e) {
         console.error(e); hideLoadingBar(); startBtn.disabled = false; startBtn.innerHTML = 'Start Interview';
-        document.getElementById('llmSelector').style.display = '';
         addMessage('Error starting interview. Please refresh the page.', true);
     }
 }
 
 /* ── Toggle recording from mic button ──────────────────────── */
-let isRecording = false;
 function toggleRecording() {
     if (!isRecording) {
         startRecording();
@@ -1261,7 +1745,7 @@ async function startRecording() {
         liveTranscript = '';
         isRecording = true;
         micBtn.classList.add('recording');
-        hideBtn(recordBtn); showBtn(stopBtn); stopBtn.classList.add('recording');
+        micBtn.disabled = false;
         updateStatus('Recording...');
     } catch (e) {
         console.error(e); addMessage('Unable to access microphone. Please allow permissions and try again.', true);
@@ -1272,10 +1756,9 @@ function stopRecording() {
     if (recognition) recognition.stop();
     if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
     transcriptionBox.classList.remove('active');
-    stopBtn.classList.remove('recording');
     isRecording = false;
     micBtn.classList.remove('recording');
-    hideBtn(stopBtn);
+    micBtn.disabled = true;
     updateStatus('Processing...');
 }
 
@@ -1292,7 +1775,8 @@ async function sendResponse(blob) {
         hideProcessingBubble();
         await getNextQuestion(savedTranscript);
     } catch (e) {
-        console.error(e); hideProcessingBubble(); hideLoadingBar(); addMessage('Error processing response. Please try again.', true); showBtn(recordBtn);
+        console.error(e); hideProcessingBubble(); hideLoadingBar(); addMessage('Error processing response. Please try again.', true);
+        micBtn.disabled = false;
     }
 }
 
@@ -1303,13 +1787,153 @@ async function getNextQuestion(transcript = '') {
         const data = await r.json();
         hideLoadingBar(); showTyping(); await new Promise(resolve => setTimeout(resolve, 700)); hideTyping();
         if (data.completed) {
-            currentQuestion = totalQuestions; updateProgress(); addMessage('Thank you for sharing. I am preparing your report now.', true); updateStatus('Preparing your report...'); showLoadingBar('Generating recommendations...'); stopTimer(); await new Promise(resolve => setTimeout(resolve, 1200)); await showResults();
+            currentQuestion = totalQuestions;
+            updateProgress();
+            addMessage('Thank you for sharing. I am preparing your report now.', true);
+            updateStatus('Preparing your report...');
+            showLoadingBar('Generating recommendations...');
+            stopTimer();
+            hideBtn(micBtn);
+            hideBtn(exitInterviewBtn);
+            await new Promise(resolve => setTimeout(resolve, 1200));
+            await showResults();
         } else {
-            currentQuestion = data.question_number; updateProgress(); updateStatus(`Question ${currentQuestion} of ${totalQuestions}`); addMessage(data.question, true); showBtn(recordBtn); showBtn(micBtn); micBtn.disabled = false;
+            currentQuestion = data.question_number;
+            updateProgress();
+            updateStatus(`Question ${currentQuestion} of ${totalQuestions}`);
+            addMessage(data.question, true);
+            micBtn.disabled = false;
         }
     } catch (e) {
-        console.error(e); hideLoadingBar(); addMessage('Error getting next question.', true); showBtn(recordBtn);
+        console.error(e); hideLoadingBar(); addMessage('Error getting next question.', true);
+        micBtn.disabled = false;
     }
+}
+
+/* ── Per-mode personalized recommendation data ───────────── */
+const MODE_TIPS = {
+    depression: {
+        minimal: [
+            "Your mood indicators look stable — keep nurturing your routine.",
+            "Stay socially engaged; strong connections are your best buffer.",
+            "Regular outdoor walks, even short ones, sustain positive affect.",
+            "Practice gratitude journaling 3–5 minutes a day.",
+        ],
+        mild: [
+            "Track your mood at the same time each day to spot patterns.",
+            "Schedule at least one enjoyable activity into every day (behavioral activation).",
+            "Aim for 7–9 hours of consistent sleep — irregular sleep worsens low mood.",
+            "Reach out to a trusted person; sharing lightens the load.",
+            "Limit alcohol — it is a depressant and disrupts sleep quality.",
+        ],
+        moderate: [
+            "Consult a mental health professional or counselor soon.",
+            "Cognitive Behavioral Therapy (CBT) has strong evidence for this level.",
+            "Break large tasks into tiny steps to overcome inertia.",
+            "Avoid social withdrawal — even brief contact helps regulate mood.",
+            "Reduce decision fatigue: simplify daily choices where possible.",
+            "Discuss medication options with a psychiatrist if therapy alone feels insufficient.",
+        ],
+        severe: [
+            "Please seek professional support urgently — you deserve care now.",
+            "Contact iCall: 9152987821 or Vandrevala Foundation: 1860-2662-345.",
+            "Tell someone you trust how you are feeling today.",
+            "Remove or secure any means of self-harm from your immediate environment.",
+            "A GP can refer you for specialist psychiatric assessment quickly.",
+            "Depression at this level is a medical condition — it responds to treatment.",
+        ],
+    },
+    anxiety: {
+        minimal: [
+            "Your anxiety levels are well-managed — great work.",
+            "Continue existing coping habits: they are clearly working.",
+            "Maintain physical activity to keep stress hormones balanced.",
+            "Mindful breathing for 5 minutes daily reinforces calm baselines.",
+        ],
+        mild: [
+            "Practice diaphragmatic (belly) breathing when tension rises.",
+            "Limit caffeine intake — it directly amplifies anxiety signals.",
+            "Use the 5-4-3-2-1 grounding technique during anxious moments.",
+            "Reduce 'what-if' thinking by writing worries down and scheduling a 10-min worry window.",
+            "Regular aerobic exercise is as effective as medication for mild anxiety.",
+        ],
+        moderate: [
+            "Consider speaking to a therapist — CBT and exposure therapy are highly effective.",
+            "Progressive Muscle Relaxation (PMR) practiced nightly reduces baseline tension.",
+            "Limit news and social media to defined time slots each day.",
+            "Identify your top anxiety triggers and write brief response plans for each.",
+            "Avoid avoidance — gradual exposure to feared situations weakens anxiety loops.",
+            "Discuss short-term medication with a clinician if anxiety disrupts daily function.",
+        ],
+        severe: [
+            "Please prioritize professional support — severe anxiety is very treatable.",
+            "iCall helpline: 9152987821 (Mon–Sat, 8am–10pm).",
+            "Avoid stimulants (caffeine, energy drinks) entirely for now.",
+            "Let a close person know what you are experiencing so they can support you.",
+            "Acceptance and Commitment Therapy (ACT) works well alongside medication.",
+            "Panic attacks feel dangerous but are not — learn the physiology to defuse them.",
+        ],
+    },
+    stress: {
+        minimal: [
+            "Your stress load is within a healthy range — maintain this balance.",
+            "Keep using your current recovery strategies; they are effective.",
+            "Short breaks every 60–90 minutes maintain cognitive performance.",
+            "Hydration and regular meals stabilize cortisol throughout the day.",
+        ],
+        mild: [
+            "Prioritize tasks using an Eisenhower matrix (urgent vs. important).",
+            "Set clearer boundaries around work hours and device use.",
+            "Incorporate a brief wind-down ritual before sleeping (no screens 30 min prior).",
+            "Physical exercise is one of the most efficient stress-discharge mechanisms.",
+            "Talk to a peer or mentor about your current workload — fresh perspective helps.",
+        ],
+        moderate: [
+            "Consider speaking to a counselor about workload management and coping strategies.",
+            "Identify the top two stressors and make one concrete change to each this week.",
+            "Chronic stress raises cortisol, disrupting sleep, immunity, and cognition — address it actively.",
+            "Introduce a daily 10-min relaxation practice (yoga, meditation, or slow walk).",
+            "Evaluate social commitments — it is okay to reduce obligations temporarily.",
+            "Discuss flexible working arrangements with your institution or employer if possible.",
+        ],
+        severe: [
+            "This level of stress requires immediate attention — please seek support.",
+            "Speak to a counselor, doctor, or trusted mentor as soon as possible.",
+            "iCall (9152987821) and NIMHANS (080-46110007) provide free mental health support.",
+            "Burnout at this level can have lasting physical health consequences — act now.",
+            "Reduce your commitments to essential tasks only until stress is managed.",
+            "Rest is not a reward — it is a prerequisite for recovery and productivity.",
+        ],
+    },
+};
+
+function buildPerModeRecs(scores, labels) {
+    const container = document.getElementById('perModeRecs');
+    container.innerHTML = '';
+    const order = ['depression', 'anxiety', 'stress'].filter(k => k in scores);
+    if (order.length === 0) return;
+
+    order.forEach(key => {
+        const score = scores[key];
+        const label = (labels[key] || 'minimal').toLowerCase();
+        const maxVal = key === 'stress' ? 1 : 24;
+        const displayVal = key === 'stress' ? (score * 100).toFixed(0) + '%' : score.toFixed(1);
+        const tips = MODE_TIPS[key]?.[label] || MODE_TIPS[key]?.minimal || [];
+
+        const card = document.createElement('div');
+        card.className = `mode-rec-card ${key}`;
+
+        const tipsHTML = tips.map(t => `<li>${t}</li>`).join('');
+        card.innerHTML = `
+            <div class="mode-rec-header">
+                <span class="mode-rec-title">${key}</span>
+                <span class="mode-rec-severity ${label}">${label}</span>
+            </div>
+            <div class="mode-rec-score">Score: ${displayVal}</div>
+            <ul class="mode-rec-tips">${tipsHTML}</ul>
+        `;
+        container.appendChild(card);
+    });
 }
 
 /* ── Results ───────────────────────────────────────────────── */
@@ -1321,21 +1945,29 @@ async function showResults() {
         const r = await fetch('/results');
         const data = await r.json();
         hideLoadingBar();
-        const scoreRow = document.getElementById('scoreRow');
-        scoreRow.innerHTML = '';
+
         const scores = data.scores || {};
-        for (const [key, val] of Object.entries(scores)) {
-            const maxVal = key === 'stress' ? 1 : 24;
-            const pct = Math.min((val / maxVal) * 100, 100);
-            const display = key === 'stress' ? (val * 100).toFixed(0) + '%' : val.toFixed(1);
-            const item = document.createElement('div');
-            item.className = 'score-item';
-            item.innerHTML = `<div class="score-circle" style="--score-percent:${pct}"><span class="score-value">${display}</span></div><div class="score-type">${key}</div><p class="score-caption">Current screening snapshot for ${key}.</p>`;
-            scoreRow.appendChild(item);
-        }
+        const labels = data.labels || {};
+        const scoreKeys = Object.keys(scores);
+
+        // Build severity pie charts (depression first, then anxiety, then stress)
+        const chartsRow = document.getElementById('severityChartsRow');
+        chartsRow.innerHTML = '';
+        const orderedKeys = ['depression', 'anxiety', 'stress'].filter(k => k in scores);
+        orderedKeys.forEach(key => {
+            const chart = createSeverityPieChart(key, scores[key], labels[key]);
+            chartsRow.appendChild(chart);
+        });
+
+        // Primary score card — kept hidden, pie charts are the primary visual
+        // (no action needed)
+
+        // Score circles row — hidden, replaced by pie charts above
+        // (no action needed)
+
+        // Severity badges
         const badgesEl = document.getElementById('severityBadges');
         badgesEl.innerHTML = '';
-        const labels = data.labels || {};
         for (const [key, lbl] of Object.entries(labels)) {
             const badge = document.createElement('span');
             const cssClass = lbl.includes('severe') ? 'severe' : lbl;
@@ -1343,8 +1975,13 @@ async function showResults() {
             badge.textContent = `${key}: ${lbl}`;
             badgesEl.appendChild(badge);
         }
+
+        // Per-mode personalized recommendations
+        buildPerModeRecs(scores, labels);
+
         document.getElementById('resultsInfo').textContent = `Assessment: ${formatAssessmentLabel(data.assessment_type || 'all')}`;
         document.getElementById('demoWarning').style.display = data.demo_mode ? 'block' : 'none';
+
         if (data.recommendation) {
             const rec = data.recommendation;
             document.getElementById('recommendationSummary').textContent = rec.summary || '';
@@ -1363,54 +2000,49 @@ async function showResults() {
         rl.classList.remove('active'); rc.style.display = 'block';
         document.querySelectorAll('.recommendation-list li, .resources-list li').forEach((li, i) => { li.style.animationDelay = `${i * 0.08}s`; });
     } catch (e) {
-        console.error(e); hideLoadingBar(); const rl = document.getElementById('resultsLoading'); if (rl) rl.classList.remove('active'); const rc = document.getElementById('resultsContent'); if (rc) rc.style.display = 'block';
+        console.error(e); hideLoadingBar();
+        const rl = document.getElementById('resultsLoading'); if (rl) rl.classList.remove('active');
+        const rc = document.getElementById('resultsContent'); if (rc) rc.style.display = 'block';
     }
 }
 
 /* ── Session management ────────────────────────────────────── */
 function exitSession() { document.getElementById('exitModalOverlay').classList.add('active'); }
 function cancelExit() { document.getElementById('exitModalOverlay').classList.remove('active'); }
-async function confirmNewSession() {
+async function confirmExit() {
     document.getElementById('exitModalOverlay').classList.remove('active');
     try { await fetch('/exit_session', { method: 'POST' }); } catch (e) {}
     if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
     if (recognition) recognition.stop();
     stopTimer();
-    resetInterview();
+    // Redirect back to intake page
+    window.location.href = '/';
 }
-function resetInterview() {
-    resultsOverlay.classList.remove('active');
-    document.getElementById('resultsContent').style.display = 'block';
-    document.getElementById('resultsLoading').classList.remove('active');
-    document.getElementById('demoWarning').style.display = 'none';
-    document.getElementById('recommendationSection').style.display = 'none';
-    hideLoadingBar();
-    chatContainer.innerHTML = '<div class="message ai"><div class="avatar">AI</div><div class="message-bubble">Welcome back. Click <strong>Start Interview</strong> when you\'re ready.</div></div>';
-    showBtn(startBtn); startBtn.innerHTML = 'Start Interview';
-    hideBtn(recordBtn); hideBtn(stopBtn); hideBtn(micBtn);
-    exitBtn.style.display = 'none';
-    currentQuestion = 0; interviewStarted = false; isRecording = false;
-    sessionSeconds = 0;
-    document.getElementById('sessionTimer').textContent = '00:00';
-    document.getElementById('metricDuration').textContent = '0:00';
-    document.getElementById('metricStatus').textContent = 'Idle';
-    document.getElementById('metricQuestions').textContent = '0 / 5';
-    document.getElementById('transcriptPreview').innerHTML = '<em style="color:var(--text-dim)">Transcript will appear here as you speak...</em>';
-    updateProgress(); updateStatus('Ready to begin'); updateAssessmentBadge('all');
-    const sel = document.getElementById('llmSelector');
-    if (sel) { sel.style.display = ''; }
-    checkLLMStatus();
+async function startNewSession() {
+    try { await fetch('/exit_session', { method: 'POST' }); } catch (e) {}
+    if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+    if (recognition) recognition.stop();
+    stopTimer();
+    window.location.href = '/';
 }
 
 /* ── Init ──────────────────────────────────────────────────── */
 window.onload = () => {
-    initializeAccordions(); updateAssessmentBadge('all');
+    initializeAccordions();
+    updateAssessmentBadge('all');
+    checkSetupStatus();
+    displayLLMInfo();
+    attachLLMModeListeners();
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         addMessage('Your browser does not support audio recording. Please use Chrome, Firefox, or Edge.', true);
         startBtn.disabled = true;
     }
-    checkLLMStatus();
     updateSidebarProgress();
+
+    // Trigger fade-in animations
+    document.querySelectorAll('.fade-in').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 60);
+    });
 };
 </script>
 </body>

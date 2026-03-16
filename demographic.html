@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participant Information | MindSpace</title>
+    <title>MindSpace Intake</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
@@ -13,37 +13,28 @@
 <div class="page-shell">
     <div class="page">
         <!-- ─── Hero ─────────────────────────────────────────── -->
-        <header class="hero">
-            <div class="eyebrow">MindSpace Intake</div>
-            <div class="hero-mark">MS</div>
-            <h1>Start with a calmer, more personal screening experience.</h1>
-            <p>
-                Share as much or as little as you like. We use this context to tailor the interview tone,
-                question framing, and final recommendations.
-            </p>
-            <div class="hero-highlights">
-                <span>Private setup</span>
-                <span>Voice-first interview</span>
-                <span>Personalized guidance</span>
-            </div>
+        <header class="hero fade-in">
+            <h1>Session Setup</h1>
+            <p>A few details to personalize your interview. All fields are optional.</p>
         </header>
 
         <!-- ─── Main form ────────────────────────────────────── -->
-        <main class="card">
+        <main class="card fade-in" style="animation-delay:0.06s">
             <div class="card-intro">
                 <div>
-                    <p class="card-kicker">Participant Information</p>
-                    <h2 class="form-title">Build your session profile</h2>
+                    <p class="card-kicker">Profile</p>
+                    <h2 class="form-title">Your background</h2>
                 </div>
-                <p class="subtitle">All fields are optional. Pick the assessment that best matches what you want to explore today.</p>
+                <p class="subtitle">Helps the interview feel more natural and relevant to you.</p>
             </div>
 
             <!-- Two-column card grid -->
             <div class="sections-grid">
 
-                <!-- 1. Participant Profile (always open) -->
+                <!-- 1. Participant Profile -->
                 <section class="section-panel" id="sectionProfile">
                     <div class="section-heading">
+                        <p class="section-label">Profile</p>
                         <h3>Participant Profile</h3>
                         <p>Simple details that help the interview feel more natural.</p>
                     </div>
@@ -61,14 +52,15 @@
                     </div>
                 </section>
 
-                <!-- 2. Academic / Professional (collapsible) -->
+                <!-- 2. Academic / Professional -->
                 <section class="section-panel collapsed" id="sectionAcademic">
                     <button type="button" class="section-toggle" onclick="toggleSection('sectionAcademic')">
                         <div class="section-heading" style="margin-bottom:0">
+                            <p class="section-label">Context</p>
                             <h3>Academic / Professional Context</h3>
                             <p>Context around your responsibilities and environment.</p>
                         </div>
-                        <span class="toggle-icon">▾</span>
+                        <span class="toggle-icon">&#9662;</span>
                     </button>
                     <div class="section-body">
                         <div class="section-body-inner">
@@ -98,14 +90,15 @@
                     </div>
                 </section>
 
-                <!-- 3. Lifestyle (collapsible) -->
+                <!-- 3. Lifestyle -->
                 <section class="section-panel collapsed" id="sectionLifestyle">
                     <button type="button" class="section-toggle" onclick="toggleSection('sectionLifestyle')">
                         <div class="section-heading" style="margin-bottom:0">
+                            <p class="section-label">Lifestyle</p>
                             <h3>Lifestyle Context</h3>
                             <p>Signal for the pace and pressure of your day-to-day life.</p>
                         </div>
-                        <span class="toggle-icon">▾</span>
+                        <span class="toggle-icon">&#9662;</span>
                     </button>
                     <div class="section-body">
                         <div class="section-body-inner">
@@ -136,14 +129,15 @@
                     </div>
                 </section>
 
-                <!-- 4. Living & Support (collapsible) -->
+                <!-- 4. Living & Support -->
                 <section class="section-panel collapsed" id="sectionSupport">
                     <button type="button" class="section-toggle" onclick="toggleSection('sectionSupport')">
                         <div class="section-heading" style="margin-bottom:0">
-                            <h3>Living & Support</h3>
+                            <p class="section-label">Support</p>
+                            <h3>Living &amp; Support</h3>
                             <p>Shared only to shape the guidance you receive later.</p>
                         </div>
-                        <span class="toggle-icon">▾</span>
+                        <span class="toggle-icon">&#9662;</span>
                     </button>
                     <div class="section-body">
                         <div class="section-body-inner">
@@ -169,99 +163,39 @@
                 <!-- 5. Stressors (full width, toggle chips) -->
                 <section class="section-panel full-width" id="sectionStressors">
                     <div class="section-heading">
+                        <p class="section-label">Stressors</p>
                         <h3>Recent Stressors</h3>
                         <p>Optional tags to help the interview adapt to what may be weighing on you.</p>
                     </div>
-                    <div class="stressor-chips">
+                    <div class="stressor-chips" id="stressorChips">
                         <label class="stressor-chip">
                             <input type="checkbox" value="Academic pressure">
                             <span class="chip-dot"></span>
-                            Academic pressure
+                            Academic Pressure
                         </label>
                         <label class="stressor-chip">
                             <input type="checkbox" value="Career uncertainty">
                             <span class="chip-dot"></span>
-                            Career uncertainty
+                            Career Uncertainty
                         </label>
                         <label class="stressor-chip">
                             <input type="checkbox" value="Financial concerns">
                             <span class="chip-dot"></span>
-                            Financial concerns
+                            Financial Concerns
                         </label>
                         <label class="stressor-chip">
                             <input type="checkbox" value="Family issues">
                             <span class="chip-dot"></span>
-                            Family issues
+                            Family Issues
                         </label>
                         <label class="stressor-chip">
                             <input type="checkbox" value="Health concerns">
                             <span class="chip-dot"></span>
-                            Health concerns
+                            Health Concerns
                         </label>
                     </div>
                 </section>
 
-                <!-- 6. Assessment type (full width, segmented tiles) -->
-                <section class="section-panel full-width assessment-panel">
-                    <div class="section-heading">
-                        <h3>Assessment Type</h3>
-                        <p>Select one track, or run the complete screening for a broader view.</p>
-                    </div>
-                    <div class="assessment-options">
-                        <label class="assessment-option">
-                            <input type="radio" name="assessment_type" value="depression">
-                            <span class="option-card">
-                                <span class="option-topline">Focused track</span>
-                                <span class="option-main">
-                                    <span class="option-icon">D</span>
-                                    <span class="option-copy">
-                                        <span class="option-label">Depression</span>
-                                        <span class="option-desc">PHQ-based mood screening</span>
-                                    </span>
-                                </span>
-                            </span>
-                        </label>
-                        <label class="assessment-option">
-                            <input type="radio" name="assessment_type" value="anxiety">
-                            <span class="option-card">
-                                <span class="option-topline">Focused track</span>
-                                <span class="option-main">
-                                    <span class="option-icon">A</span>
-                                    <span class="option-copy">
-                                        <span class="option-label">Anxiety</span>
-                                        <span class="option-desc">Tension and worry assessment</span>
-                                    </span>
-                                </span>
-                            </span>
-                        </label>
-                        <label class="assessment-option">
-                            <input type="radio" name="assessment_type" value="stress">
-                            <span class="option-card">
-                                <span class="option-topline">Focused track</span>
-                                <span class="option-main">
-                                    <span class="option-icon">S</span>
-                                    <span class="option-copy">
-                                        <span class="option-label">Stress</span>
-                                        <span class="option-desc">Pressure and overload detection</span>
-                                    </span>
-                                </span>
-                            </span>
-                        </label>
-                        <label class="assessment-option">
-                            <input type="radio" name="assessment_type" value="all" checked>
-                            <span class="option-card featured">
-                                <span class="option-topline">Recommended</span>
-                                <span class="option-main">
-                                    <span class="option-icon">MS</span>
-                                    <span class="option-copy">
-                                        <span class="option-label">Complete Assessment</span>
-                                        <span class="option-desc">Depression, anxiety, and stress together</span>
-                                    </span>
-                                </span>
-                            </span>
-                        </label>
-                    </div>
-                </section>
 
             </div><!-- /sections-grid -->
 
