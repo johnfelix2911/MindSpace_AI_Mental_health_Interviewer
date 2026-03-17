@@ -209,6 +209,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            min-height: 0;
         }
 
         /* Chat header */
@@ -275,6 +276,7 @@
             max-width: 800px;
             width: 100%;
             margin: 0 auto;
+            min-height: 0;
         }
         .chat-container::-webkit-scrollbar { width: 5px; }
         .chat-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 999px; }
@@ -1020,6 +1022,7 @@
             border: 1px solid rgba(94,123,255,0.4);
             background: rgba(94,123,255,0.07);
             box-shadow: 0 0 0 1px rgba(94,123,255,0.08), 0 6px 20px rgba(94,123,255,0.1);
+            flex-shrink: 0;
         }
         .pi-header {
             display: flex;
@@ -1058,6 +1061,9 @@
             text-transform: uppercase;
             color: #7690b1;
             margin-bottom: 8px;
+        }
+        .pi-section.full-width {
+            grid-column: 1 / -1;
         }
         .pi-llm-options {
             display: grid;
@@ -1121,10 +1127,55 @@
         }
         .pi-assess-card:hover { border-color: rgba(94,123,255,0.3); }
         .pi-assess-card.featured { border-color: rgba(42,198,184,0.25); }
+        .pi-voice-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .pi-voice-opt { position: relative; }
+        .pi-voice-opt input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+        .pi-voice-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 3px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .pi-voice-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .pi-voice-desc {
+            font-size: 10px;
+            color: #7690b1;
+            line-height: 1.35;
+        }
+        .pi-voice-opt input[type="radio"]:checked + .pi-voice-card {
+            border-color: var(--accent-teal);
+            background: rgba(42,198,184,0.12);
+            box-shadow: 0 0 0 1px rgba(42,198,184,0.14);
+        }
+        .pi-voice-card:hover {
+            border-color: rgba(255,255,255,0.16);
+            background: rgba(255,255,255,0.05);
+        }
+        .pi-voice-note {
+            margin-top: 8px;
+            font-size: 10px;
+            color: #7690b1;
+            line-height: 1.4;
+        }
         @media (max-width: 700px) {
             .pi-grid { grid-template-columns: 1fr; }
             .pre-interview-panel { margin: 0 14px 8px; }
             .pi-assessment-options { grid-template-columns: repeat(2, 1fr); }
+            .pi-voice-options { grid-template-columns: 1fr; }
         }
 
         /* ── Responsive ──────────────────────────────────────── */
@@ -1144,6 +1195,20 @@
             .results-card { padding: 20px 16px; }
             .mic-button { width: 60px; height: 60px; font-size: 22px; }
             .primary-score-number { font-size: 36px; }
+        }
+        @media (max-height: 920px) {
+            .center-main {
+                overflow-y: auto;
+            }
+            .chat-container {
+                flex: 0 0 auto;
+                min-height: 170px;
+            }
+            .controls-bar {
+                position: sticky;
+                bottom: 0;
+                z-index: 5;
+            }
         }
     </style>
 </head>
@@ -1201,6 +1266,16 @@
                 <div class="session-info-item" id="llmEngineInfo">
                     <span class="info-dot blue"></span>
                     <span id="llmEngineLabel">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-card" id="voiceInfoCard">
+            <div class="sidebar-card-title">Voice</div>
+            <div class="session-info-list">
+                <div class="session-info-item" id="voiceModeInfo">
+                    <span class="info-dot teal"></span>
+                    <span id="voiceModeLabel">Female</span>
                 </div>
             </div>
         </div>
@@ -1266,6 +1341,26 @@
                             </span>
                         </label>
                     </div>
+                </div>
+                <div class="pi-section full-width">
+                    <div class="pi-section-label">AI Interviewer Voice</div>
+                    <div class="pi-voice-options">
+                        <label class="pi-voice-opt">
+                            <input type="radio" name="interviewer_voice" value="female" checked>
+                            <span class="pi-voice-card">
+                                <span class="pi-voice-name">Female</span>
+                                <span class="pi-voice-desc">Default browser female-style voice</span>
+                            </span>
+                        </label>
+                        <label class="pi-voice-opt">
+                            <input type="radio" name="interviewer_voice" value="male">
+                            <span class="pi-voice-card">
+                                <span class="pi-voice-name">Male</span>
+                                <span class="pi-voice-desc">Default browser male-style voice</span>
+                            </span>
+                        </label>
+                    </div>
+                    <div class="pi-voice-note">Selecting a voice plays a short preview using your browser's built-in speech engine.</div>
                 </div>
                 <!-- Assessment Type -->
                 <div class="pi-section">
@@ -1451,10 +1546,39 @@ const resultsOverlay = document.getElementById('resultsOverlay');
 const assessmentBadge = document.getElementById('assessmentBadge');
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let preferredTtsVoice = null;
+const INTERVIEWER_VOICE_PROFILES = {
+    female: {
+        label: 'Female',
+        rate: 0.82,
+        pitch: 1.08,
+        lang: 'en-US',
+        femaleBias: ['female', 'samantha', 'victoria', 'zira', 'hazel', 'susan', 'aria', 'jenny', 'maya', 'moira', 'karen', 'serena', 'sonia'],
+        maleBias: [],
+    },
+    male: {
+        label: 'Male',
+        rate: 0.84,
+        pitch: 0.82,
+        lang: 'en-US',
+        femaleBias: [],
+        maleBias: ['male', 'david', 'mark', 'james', 'alex', 'daniel', 'george', 'ryan', 'alan', 'thomas', 'aaron'],
+    },
+};
 
-function scoreTtsVoice(voice) {
+function getSelectedInterviewerVoice() {
+    return document.querySelector('input[name="interviewer_voice"]:checked')?.value || 'female';
+}
+
+function getSelectedInterviewerProfile() {
+    return INTERVIEWER_VOICE_PROFILES[getSelectedInterviewerVoice()] || INTERVIEWER_VOICE_PROFILES.female;
+}
+
+function scoreTtsVoice(voice, profile = getSelectedInterviewerProfile()) {
     const name = (voice.name || '').toLowerCase();
     const lang = (voice.lang || '').toLowerCase();
+    const prefersMale = getSelectedInterviewerVoice() === 'male';
+    const femalePattern = /(female|woman|samantha|victoria|zira|hazel|susan|aria|jenny|maya|moira|karen|serena|sonia)/;
+    const malePattern = /(male|man|david|mark|james|alex|daniel|george|ryan|alan|thomas|aaron)/;
     let score = 0;
 
     if (lang.startsWith('en-in')) score += 70;
@@ -1465,10 +1589,26 @@ function scoreTtsVoice(voice) {
     if (voice.localService) score += 15;
     if (voice.default) score += 8;
 
-    if (/(female|woman|samantha|victoria|zira|hazel|susan|aria|jenny|maya|moira|karen|serena|sonia)/.test(name)) score += 35;
+    if (prefersMale) {
+        if (malePattern.test(name)) score += 40;
+        if (femalePattern.test(name)) score -= 25;
+    } else {
+        if (femalePattern.test(name)) score += 40;
+        if (malePattern.test(name)) score -= 25;
+    }
+
     if (/(natural|neural|premium|enhanced|online)/.test(name)) score += 20;
-    if (/(male|man|david|mark|james|alex|daniel|george)/.test(name)) score -= 10;
     if (/(google us english|microsoft david|microsoft mark)/.test(name)) score -= 8;
+    if (profile && Array.isArray(profile.femaleBias)) {
+        profile.femaleBias.forEach((token) => {
+            if (name.includes(token)) score += 12;
+        });
+    }
+    if (profile && Array.isArray(profile.maleBias)) {
+        profile.maleBias.forEach((token) => {
+            if (name.includes(token)) score += 12;
+        });
+    }
 
     return score;
 }
@@ -1478,33 +1618,52 @@ function resolvePreferredTtsVoice() {
     const voices = window.speechSynthesis.getVoices();
     if (!voices.length) return null;
 
-    preferredTtsVoice = [...voices].sort((a, b) => scoreTtsVoice(b) - scoreTtsVoice(a))[0] || null;
+    const profile = getSelectedInterviewerProfile();
+    const sortedVoices = [...voices].sort((a, b) => scoreTtsVoice(b, profile) - scoreTtsVoice(a, profile));
+    preferredTtsVoice = sortedVoices[0] || null;
     return preferredTtsVoice;
 }
 
-function speakAiText(text) {
+function stopCurrentTtsPlayback() {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+    }
+}
+
+function speakWithBrowserTts(text) {
     if (!('speechSynthesis' in window)) return;
 
     const cleanText = text.replace(/<[^>]*>/g, '').trim();
     if (!cleanText) return;
 
     const synth = window.speechSynthesis;
-    synth.cancel();
+    stopCurrentTtsPlayback();
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
     const voice = preferredTtsVoice || resolvePreferredTtsVoice();
+    const profile = getSelectedInterviewerProfile();
     if (voice) {
         utterance.voice = voice;
-        utterance.lang = voice.lang || 'en-US';
+        utterance.lang = voice.lang || profile.lang || 'en-US';
     } else {
-        utterance.lang = 'en-US';
+        utterance.lang = profile.lang || 'en-US';
     }
 
-    utterance.rate = 0.88;
-    utterance.pitch = 1.04;
+    utterance.rate = profile.rate;
+    utterance.pitch = profile.pitch;
     utterance.volume = 1;
 
     synth.speak(utterance);
+}
+
+function speakAiText(text) {
+    speakWithBrowserTts(text);
+}
+
+function previewInterviewerVoice() {
+    const profile = getSelectedInterviewerProfile();
+    if (!profile) return;
+    speakAiText(`Hi, I am the ${profile.label} voice. I will guide your interview today.`);
 }
 
 /* ── Get selections from pre-interview panel ─────────────── */
@@ -1650,10 +1809,14 @@ function hideBtn(btn) { btn.style.display = 'none'; btn.disabled = true; }
 function displayLLMInfo() {
     const mode = getSelectedLLMMode();
     const label = document.getElementById('llmEngineLabel');
+    const voiceLabel = document.getElementById('voiceModeLabel');
     if (mode === 'local') {
         label.textContent = 'Local LLM (on-device)';
     } else {
         label.textContent = 'Gemini API (cloud)';
+    }
+    if (voiceLabel) {
+        voiceLabel.textContent = getSelectedInterviewerProfile().label;
     }
 }
 
@@ -1663,6 +1826,28 @@ function attachLLMModeListeners() {
     radios.forEach(radio => {
         radio.addEventListener('change', () => {
             displayLLMInfo();
+        });
+    });
+}
+
+function attachAssessmentModeListeners() {
+    const radios = document.querySelectorAll('input[name="assessment_type"]');
+    radios.forEach((radio) => {
+        radio.addEventListener('change', () => {
+            updateAssessmentBadge(getSelectedAssessmentType());
+        });
+    });
+}
+
+function attachVoiceModeListeners() {
+    const radios = document.querySelectorAll('input[name="interviewer_voice"]');
+    radios.forEach((radio) => {
+        radio.addEventListener('change', () => {
+            preferredTtsVoice = null;
+            resolvePreferredTtsVoice();
+            stopCurrentTtsPlayback();
+            displayLLMInfo();
+            previewInterviewerVoice();
         });
     });
 }
@@ -2091,6 +2276,8 @@ window.onload = () => {
     checkSetupStatus();
     displayLLMInfo();
     attachLLMModeListeners();
+    attachAssessmentModeListeners();
+    attachVoiceModeListeners();
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         addMessage('Your browser does not support audio recording. Please use Chrome, Firefox, or Edge.', true);
         startBtn.disabled = true;
