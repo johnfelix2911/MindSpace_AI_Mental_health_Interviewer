@@ -1,49 +1,14 @@
-/* ── Collapsible section toggle ─────────────────────────────── */
-function toggleSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (!section) return;
-    section.classList.toggle('collapsed');
-    const toggle = section.querySelector('.section-toggle');
-    if (toggle) {
-        toggle.setAttribute('aria-expanded', String(!section.classList.contains('collapsed')));
-    }
-}
-
-/* ── Stressor chip multi-select ────────────────────────────── */
-function initStressorChips() {
-    const chips = document.querySelectorAll('.stressor-chip');
-    chips.forEach(chip => {
-        const checkbox = chip.querySelector('input[type="checkbox"]');
-        if (checkbox) {
-            chip.addEventListener('click', function(event) {
-                if (event.target === checkbox) return;
-                event.preventDefault();
-                checkbox.checked = !checkbox.checked;
-                chip.classList.toggle('active', checkbox.checked);
-                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-            });
-
-            checkbox.addEventListener('change', function() {
-                chip.classList.toggle('active', this.checked);
-            });
-
-            chip.classList.toggle('active', checkbox.checked);
-        }
-    });
-}
-
-/* ── Form submission (preserved logic) ─────────────────────── */
 async function continueInterview() {
     const statusMsg = document.getElementById('statusMessage');
     const btn = document.querySelector('.primary-btn');
 
     btn.classList.add('loading');
-    btn.innerHTML = '<span class="btn-spinner"></span>Saving your information...';
+    btn.innerHTML = '<span class="btn-spinner"></span> Saving your information...';
     statusMsg.textContent = '';
 
     try {
         const stressors = [];
-        document.querySelectorAll('.stressor-chip input[type="checkbox"]:checked').forEach(cb => {
+        document.querySelectorAll('input[type="checkbox"]:checked').forEach((cb) => {
             stressors.push(cb.value);
         });
 
@@ -66,15 +31,15 @@ async function continueInterview() {
         const response = await fetch('/submit_demographics', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
         });
 
         const result = await response.json();
 
         if (response.ok) {
-            btn.innerHTML = 'Session ready';
-            statusMsg.textContent = 'Redirecting to your interview...';
-            statusMsg.style.color = '#41d6a4';
+            btn.innerHTML = 'Success!';
+            statusMsg.textContent = 'Redirecting to interview...';
+            statusMsg.style.color = '#10b981';
 
             const transition = document.getElementById('pageTransition');
             if (transition) {
@@ -88,17 +53,12 @@ async function continueInterview() {
             btn.classList.remove('loading');
             btn.innerHTML = 'Continue to Interview';
             statusMsg.textContent = 'Error: ' + (result.detail || 'Submission failed');
-            statusMsg.style.color = '#ff6f7a';
+            statusMsg.style.color = '#ef4444';
         }
     } catch (error) {
         btn.classList.remove('loading');
         btn.innerHTML = 'Continue to Interview';
         statusMsg.textContent = 'Error: ' + error.message;
-        statusMsg.style.color = '#ff6f7a';
+        statusMsg.style.color = '#ef4444';
     }
 }
-
-/* ── Init ──────────────────────────────────────────────────── */
-window.addEventListener('DOMContentLoaded', () => {
-    initStressorChips();
-});

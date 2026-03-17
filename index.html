@@ -970,7 +970,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transform: rotate(90deg);
+            gap: 6px;
+            text-align: center;
         }
         .pie-score-value {
             font-family: 'Sora', sans-serif;
@@ -983,7 +984,6 @@
             font-size: 11px;
             font-weight: 600;
             color: var(--text-dim);
-            margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
@@ -1450,6 +1450,62 @@ const statusText = document.getElementById('statusText');
 const resultsOverlay = document.getElementById('resultsOverlay');
 const assessmentBadge = document.getElementById('assessmentBadge');
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let preferredTtsVoice = null;
+
+function scoreTtsVoice(voice) {
+    const name = (voice.name || '').toLowerCase();
+    const lang = (voice.lang || '').toLowerCase();
+    let score = 0;
+
+    if (lang.startsWith('en-in')) score += 70;
+    else if (lang.startsWith('en-gb')) score += 60;
+    else if (lang.startsWith('en-us')) score += 55;
+    else if (lang.startsWith('en')) score += 45;
+
+    if (voice.localService) score += 15;
+    if (voice.default) score += 8;
+
+    if (/(female|woman|samantha|victoria|zira|hazel|susan|aria|jenny|maya|moira|karen|serena|sonia)/.test(name)) score += 35;
+    if (/(natural|neural|premium|enhanced|online)/.test(name)) score += 20;
+    if (/(male|man|david|mark|james|alex|daniel|george)/.test(name)) score -= 10;
+    if (/(google us english|microsoft david|microsoft mark)/.test(name)) score -= 8;
+
+    return score;
+}
+
+function resolvePreferredTtsVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+
+    preferredTtsVoice = [...voices].sort((a, b) => scoreTtsVoice(b) - scoreTtsVoice(a))[0] || null;
+    return preferredTtsVoice;
+}
+
+function speakAiText(text) {
+    if (!('speechSynthesis' in window)) return;
+
+    const cleanText = text.replace(/<[^>]*>/g, '').trim();
+    if (!cleanText) return;
+
+    const synth = window.speechSynthesis;
+    synth.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    const voice = preferredTtsVoice || resolvePreferredTtsVoice();
+    if (voice) {
+        utterance.voice = voice;
+        utterance.lang = voice.lang || 'en-US';
+    } else {
+        utterance.lang = 'en-US';
+    }
+
+    utterance.rate = 0.88;
+    utterance.pitch = 1.04;
+    utterance.volume = 1;
+
+    synth.speak(utterance);
+}
 
 /* ── Get selections from pre-interview panel ─────────────── */
 function getSelectedLLMMode() {
@@ -1553,11 +1609,7 @@ function addMessage(text, isAI = true) {
     chatContainer.appendChild(d);
     chatContainer.scrollTop = chatContainer.scrollHeight;
     updateTranscriptPreview(text.replace(/<[^>]*>/g, ''), !isAI);
-    if (isAI && 'speechSynthesis' in window) {
-        speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g, ''));
-        u.rate = 0.95; u.pitch = 1; speechSynthesis.speak(u);
-    }
+    if (isAI) speakAiText(text);
 }
 function showLoadingBar(text) { document.getElementById('loadingBarText').textContent = text; document.getElementById('loadingBar').classList.add('active'); }
 function hideLoadingBar() { document.getElementById('loadingBar').classList.remove('active'); }
@@ -2028,6 +2080,12 @@ async function startNewSession() {
 
 /* ── Init ──────────────────────────────────────────────────── */
 window.onload = () => {
+    if ('speechSynthesis' in window) {
+        resolvePreferredTtsVoice();
+        window.speechSynthesis.onvoiceschanged = () => {
+            resolvePreferredTtsVoice();
+        };
+    }
     initializeAccordions();
     updateAssessmentBadge('all');
     checkSetupStatus();

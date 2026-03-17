@@ -3,214 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindSpace Intake</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>Participant Information | MindSpace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/demographic.css">
 </head>
 <body>
-<div class="page-shell">
-    <div class="page">
-        <!-- ─── Hero ─────────────────────────────────────────── -->
-        <header class="hero fade-in">
-            <h1>Session Setup</h1>
-            <p>A few details to personalize your interview. All fields are optional.</p>
-        </header>
+<div class="page">
+    <div class="hero">
+        <div class="brain">MindSpace</div>
+        <h1>MindSpace - Mental Health AI Interviewer</h1>
+        <p>Compassionate AI-powered mental health screening</p>
+    </div>
 
-        <!-- ─── Main form ────────────────────────────────────── -->
-        <main class="card fade-in" style="animation-delay:0.06s">
-            <div class="card-intro">
-                <div>
-                    <p class="card-kicker">Profile</p>
-                    <h2 class="form-title">Your background</h2>
-                </div>
-                <p class="subtitle">Helps the interview feel more natural and relevant to you.</p>
+    <div class="card">
+        <h2 class="form-title">Participant Information</h2>
+        <p class="subtitle">Help us personalize your experience. All fields are optional.</p>
+
+        <section>
+            <h3>Basic Information</h3>
+            <div class="grid">
+                <input type="text" id="name" placeholder="Full Name">
+                <input type="number" id="age" placeholder="Age">
+                <select id="gender">
+                    <option value="" selected disabled>Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-binary">Non-binary</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+                <input type="text" id="country" placeholder="Country / Region">
             </div>
+        </section>
 
-            <!-- Two-column card grid -->
-            <div class="sections-grid">
+        <section>
+            <h3>Academic / Professional Context</h3>
+            <div class="grid">
+                <select id="role">
+                    <option value="" selected disabled>Current Role</option>
+                    <option value="Undergraduate Student">Undergraduate Student</option>
+                    <option value="Postgraduate Student">Postgraduate Student</option>
+                    <option value="Working Professional">Working Professional</option>
+                    <option value="Other">Other</option>
+                </select>
+                <select id="stage">
+                    <option value="" selected disabled>Current Stage</option>
+                    <option value="Early Stage">Early Stage</option>
+                    <option value="Mid Stage">Mid Stage</option>
+                    <option value="Final Year">Final Year</option>
+                </select>
+                <select id="focus">
+                    <option value="" selected disabled>Primary Focus</option>
+                    <option value="Academics">Academics</option>
+                    <option value="Research">Research</option>
+                    <option value="Job / Internship Search">Job / Internship Search</option>
+                    <option value="Competitive Exams">Competitive Exams</option>
+                </select>
+            </div>
+        </section>
 
-                <!-- 1. Participant Profile -->
-                <section class="section-panel" id="sectionProfile">
-                    <div class="section-heading">
-                        <p class="section-label">Profile</p>
-                        <h3>Participant Profile</h3>
-                        <p>Simple details that help the interview feel more natural.</p>
-                    </div>
-                    <div class="grid">
-                        <input type="text" id="name" placeholder="Full Name">
-                        <input type="number" id="age" placeholder="Age">
-                        <select id="gender">
-                            <option value="" selected disabled>Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Non-binary">Non-binary</option>
-                            <option value="Prefer not to say">Prefer not to say</option>
-                        </select>
-                        <input type="text" id="country" placeholder="Country / Region">
-                    </div>
-                </section>
+        <section>
+            <h3>Lifestyle &amp; Routine</h3>
+            <div class="grid">
+                <select id="sleep_duration">
+                    <option value="" selected disabled>Average Sleep Duration</option>
+                    <option value="< 5 hours">&lt; 5 hours</option>
+                    <option value="5-6 hours">5-6 hours</option>
+                    <option value="6-7 hours">6-7 hours</option>
+                    <option value="7+ hours">7+ hours</option>
+                </select>
+                <select id="workload">
+                    <option value="" selected disabled>Daily Workload</option>
+                    <option value="Low">Low</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="High">High</option>
+                    <option value="Very High">Very High</option>
+                </select>
+                <select id="screen_time">
+                    <option value="" selected disabled>Daily Screen Time</option>
+                    <option value="< 4 hours">&lt; 4 hours</option>
+                    <option value="4-6 hours">4-6 hours</option>
+                    <option value="6-8 hours">6-8 hours</option>
+                    <option value="8+ hours">8+ hours</option>
+                </select>
+            </div>
+        </section>
 
-                <!-- 2. Academic / Professional -->
-                <section class="section-panel collapsed" id="sectionAcademic">
-                    <button type="button" class="section-toggle" onclick="toggleSection('sectionAcademic')" aria-expanded="false" aria-controls="sectionAcademicBody">
-                        <span class="section-toggle-copy">
-                            <span class="section-label">Context</span>
-                            <span class="section-title">Academic / Professional Context</span>
-                            <span class="section-description">Context around your responsibilities and environment.</span>
-                        </span>
-                        <span class="toggle-icon" aria-hidden="true">&#9662;</span>
-                    </button>
-                    <div class="section-body" id="sectionAcademicBody">
-                        <div class="section-body-inner">
-                            <div class="grid" style="margin-top:14px">
-                                <select id="role">
-                                    <option value="" selected disabled>Current Role</option>
-                                    <option value="Undergraduate Student">Undergraduate Student</option>
-                                    <option value="Postgraduate Student">Postgraduate Student</option>
-                                    <option value="Working Professional">Working Professional</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <select id="stage">
-                                    <option value="" selected disabled>Current Stage</option>
-                                    <option value="Early Stage">Early Stage</option>
-                                    <option value="Mid Stage">Mid Stage</option>
-                                    <option value="Final Year">Final Year</option>
-                                </select>
-                                <select id="focus">
-                                    <option value="" selected disabled>Primary Focus</option>
-                                    <option value="Academics">Academics</option>
-                                    <option value="Research">Research</option>
-                                    <option value="Job / Internship Search">Job / Internship Search</option>
-                                    <option value="Competitive Exams">Competitive Exams</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+        <section>
+            <h3>Living &amp; Support Environment</h3>
+            <div class="grid">
+                <select id="living_situation">
+                    <option value="" selected disabled>Living Situation</option>
+                    <option value="With Family">With Family</option>
+                    <option value="Hostel">Hostel</option>
+                    <option value="Alone">Alone</option>
+                    <option value="Shared Accommodation">Shared Accommodation</option>
+                </select>
+                <select id="support_system">
+                    <option value="" selected disabled>Support System Availability</option>
+                    <option value="Strong">Strong</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="Limited">Limited</option>
+                </select>
+            </div>
+        </section>
 
-                <!-- 3. Lifestyle -->
-                <section class="section-panel collapsed" id="sectionLifestyle">
-                    <button type="button" class="section-toggle" onclick="toggleSection('sectionLifestyle')" aria-expanded="false" aria-controls="sectionLifestyleBody">
-                        <span class="section-toggle-copy">
-                            <span class="section-label">Lifestyle</span>
-                            <span class="section-title">Lifestyle Context</span>
-                            <span class="section-description">Signal for the pace and pressure of your day-to-day life.</span>
-                        </span>
-                        <span class="toggle-icon" aria-hidden="true">&#9662;</span>
-                    </button>
-                    <div class="section-body" id="sectionLifestyleBody">
-                        <div class="section-body-inner">
-                            <div class="grid" style="margin-top:14px">
-                                <select id="sleep_duration">
-                                    <option value="" selected disabled>Average Sleep Duration</option>
-                                    <option value="< 5 hours">&lt; 5 hours</option>
-                                    <option value="5-6 hours">5-6 hours</option>
-                                    <option value="6-7 hours">6-7 hours</option>
-                                    <option value="7+ hours">7+ hours</option>
-                                </select>
-                                <select id="workload">
-                                    <option value="" selected disabled>Daily Workload</option>
-                                    <option value="Low">Low</option>
-                                    <option value="Moderate">Moderate</option>
-                                    <option value="High">High</option>
-                                    <option value="Very High">Very High</option>
-                                </select>
-                                <select id="screen_time">
-                                    <option value="" selected disabled>Daily Screen Time</option>
-                                    <option value="< 4 hours">&lt; 4 hours</option>
-                                    <option value="4-6 hours">4-6 hours</option>
-                                    <option value="6-8 hours">6-8 hours</option>
-                                    <option value="8+ hours">8+ hours</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+        <section>
+            <h3>Recent Stressors (Optional)</h3>
+            <div class="checkboxes">
+                <label><input type="checkbox" value="Academic pressure"> Academic pressure</label>
+                <label><input type="checkbox" value="Career uncertainty"> Career uncertainty</label>
+                <label><input type="checkbox" value="Financial concerns"> Financial concerns</label>
+                <label><input type="checkbox" value="Family issues"> Family issues</label>
+                <label><input type="checkbox" value="Health concerns"> Health concerns</label>
+            </div>
+        </section>
 
-                <!-- 4. Living & Support -->
-                <section class="section-panel collapsed" id="sectionSupport">
-                    <button type="button" class="section-toggle" onclick="toggleSection('sectionSupport')" aria-expanded="false" aria-controls="sectionSupportBody">
-                        <span class="section-toggle-copy">
-                            <span class="section-label">Support</span>
-                            <span class="section-title">Living &amp; Support</span>
-                            <span class="section-description">Shared only to shape the guidance you receive later.</span>
-                        </span>
-                        <span class="toggle-icon" aria-hidden="true">&#9662;</span>
-                    </button>
-                    <div class="section-body" id="sectionSupportBody">
-                        <div class="section-body-inner">
-                            <div class="grid" style="margin-top:14px">
-                                <select id="living_situation">
-                                    <option value="" selected disabled>Living Situation</option>
-                                    <option value="With Family">With Family</option>
-                                    <option value="Hostel">Hostel</option>
-                                    <option value="Alone">Alone</option>
-                                    <option value="Shared Accommodation">Shared Accommodation</option>
-                                </select>
-                                <select id="support_system">
-                                    <option value="" selected disabled>Support System Availability</option>
-                                    <option value="Strong">Strong</option>
-                                    <option value="Moderate">Moderate</option>
-                                    <option value="Limited">Limited</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+        <button class="primary-btn" onclick="continueInterview()">
+            Continue to Interview
+        </button>
 
-                <!-- 5. Stressors (full width, toggle chips) -->
-                <section class="section-panel full-width" id="sectionStressors">
-                    <div class="section-heading">
-                        <p class="section-label">Stressors</p>
-                        <h3>Recent Stressors</h3>
-                        <p>Optional tags to help the interview adapt to what may be weighing on you.</p>
-                    </div>
-                    <div class="stressor-chips" id="stressorChips">
-                        <label class="stressor-chip">
-                            <input type="checkbox" value="Academic pressure">
-                            <span class="chip-check" aria-hidden="true"></span>
-                            <span class="chip-text">Academic Pressure</span>
-                        </label>
-                        <label class="stressor-chip">
-                            <input type="checkbox" value="Career uncertainty">
-                            <span class="chip-check" aria-hidden="true"></span>
-                            <span class="chip-text">Career Uncertainty</span>
-                        </label>
-                        <label class="stressor-chip">
-                            <input type="checkbox" value="Financial concerns">
-                            <span class="chip-check" aria-hidden="true"></span>
-                            <span class="chip-text">Financial Concerns</span>
-                        </label>
-                        <label class="stressor-chip">
-                            <input type="checkbox" value="Family issues">
-                            <span class="chip-check" aria-hidden="true"></span>
-                            <span class="chip-text">Family Issues</span>
-                        </label>
-                        <label class="stressor-chip">
-                            <input type="checkbox" value="Health concerns">
-                            <span class="chip-check" aria-hidden="true"></span>
-                            <span class="chip-text">Health Concerns</span>
-                        </label>
-                    </div>
-                </section>
-
-
-            </div><!-- /sections-grid -->
-
-            <button class="primary-btn" onclick="continueInterview()">
-                Continue to Interview
-            </button>
-
-            <p id="statusMessage"></p>
-        </main>
+        <p id="statusMessage"></p>
     </div>
 </div>
 
 <div class="page-transition" id="pageTransition">
     <div class="transition-spinner"></div>
-    <span class="transition-text">Preparing your interview space...</span>
+    <span class="transition-text">Setting up your personalized interview...</span>
 </div>
 
 <script src="/demographic.js"></script>
