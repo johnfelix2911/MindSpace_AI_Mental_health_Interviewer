@@ -155,7 +155,7 @@ Create a file named `.env` in the project root:
 GEMINI_API_KEY=your_key_here
 GEMINI_MODEL_NAME=gemini-2.5-flash
 HOST=0.0.0.0
-PORT=8000
+PORT=8001
 TOTAL_QUESTIONS=5
 ```
 
@@ -191,7 +191,7 @@ python scripts/verify_setup.py
 python main.py
 ```
 
-Open `http://localhost:8000`.
+Open `http://localhost:8001`.
 
 ## Model Assets
 

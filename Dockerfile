@@ -4,7 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     HOST=0.0.0.0 \
-    PORT=8000 \
+    PORT=8001 \
     XDG_CACHE_HOME=/app/.cache \
     HF_HOME=/app/.cache/huggingface \
     TRANSFORMERS_CACHE=/app/.cache/huggingface \
@@ -25,6 +25,6 @@ COPY . .
 
 RUN mkdir -p /app/.cache/huggingface /app/.cache/torch
 
-EXPOSE 8000
+EXPOSE 8001
 
 CMD ["python", "main.py"]

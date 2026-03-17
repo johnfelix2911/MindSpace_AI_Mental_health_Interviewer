@@ -55,7 +55,7 @@ Local model files (already in `models/`):
 
 ```bash
 pip install gunicorn
-gunicorn main:app -w 1 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+gunicorn main:app -w 1 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8001
 ```
 
 Use `-w 1` (single worker) because the ML models are loaded in-process memory.
@@ -88,7 +88,7 @@ server {
     server_name mindspace.example.com;
 
     location / {
-        proxy_pass http://127.0.0.1:8000;
+        proxy_pass http://127.0.0.1:8001;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         client_max_body_size 50M;
@@ -102,7 +102,7 @@ server {
 |---|---|---|---|
 | `GEMINI_API_KEY` | Yes | — | Google Gemini API key |
 | `HOST` | No | `0.0.0.0` | Server bind address |
-| `PORT` | No | `8000` | Server port |
+| `PORT` | No | `8001` | Server port |
 | `CORS_ORIGINS` | No | `*` | Comma-separated origins |
 | `TOTAL_QUESTIONS` | No | `5` | Interview question count |
 | `SER_LOAD_TIMEOUT` | No | `120` | SER model load timeout (seconds) |

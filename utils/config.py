@@ -59,7 +59,7 @@ ANXIETY_N_MFCC: int = int(os.environ.get("ANXIETY_N_MFCC", "40"))
 
 # --- Server ---
 HOST: str = os.environ.get("HOST", "0.0.0.0")
-PORT: int = int(os.environ.get("PORT", "8000"))
+PORT: int = int(os.environ.get("PORT", "8001"))
 CORS_ORIGINS: list = os.environ.get("CORS_ORIGINS", "*").split(",")
 
 # --- Interview ---
