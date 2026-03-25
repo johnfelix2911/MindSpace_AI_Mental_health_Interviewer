@@ -743,6 +743,192 @@
             gap: 16px;
             margin-top: 8px;
         }
+        .phq8-section {
+            margin-top: 18px;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(94,123,255,0.2);
+            background: linear-gradient(145deg, rgba(94,123,255,0.08), rgba(42,198,184,0.04));
+        }
+        .phq8-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .phq8-title-wrap h4 {
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .phq8-title-wrap p {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .phq8-kicker {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: rgba(42,198,184,0.12);
+            border: 1px solid rgba(42,198,184,0.2);
+            color: var(--accent-teal);
+        }
+        .phq8-meta {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin: 16px 0 18px;
+        }
+        .phq8-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .phq8-field label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+        }
+        .phq8-field input {
+            width: 100%;
+            padding: 11px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-soft);
+            background: rgba(6,14,28,0.72);
+            color: var(--text-main);
+            font: inherit;
+        }
+        .phq8-field input:focus {
+            outline: none;
+            border-color: rgba(94,123,255,0.45);
+            box-shadow: 0 0 0 3px rgba(94,123,255,0.12);
+        }
+        .phq8-table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid var(--border-soft);
+            background: rgba(4,10,22,0.42);
+        }
+        .phq8-table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+        }
+        .phq8-table thead th {
+            padding: 14px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--border-soft);
+            text-align: center;
+        }
+        .phq8-table thead th:first-child {
+            text-align: left;
+        }
+        .phq8-table tbody tr:nth-child(odd) {
+            background: rgba(255,255,255,0.02);
+        }
+        .phq8-table td {
+            padding: 14px 12px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            vertical-align: top;
+        }
+        .phq8-question {
+            display: flex;
+            gap: 10px;
+        }
+        .phq8-question-number {
+            min-width: 24px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+        .phq8-question-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+        .phq8-option-cell {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .phq8-option {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+        }
+        .phq8-option:hover {
+            transform: translateY(-1px);
+            border-color: rgba(94,123,255,0.28);
+            background: rgba(94,123,255,0.08);
+        }
+        .phq8-option input {
+            width: 18px;
+            height: 18px;
+            accent-color: #5e7bff;
+            cursor: pointer;
+        }
+        .phq8-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+        .phq8-stat {
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+            background: rgba(6,14,28,0.74);
+        }
+        .phq8-stat-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+        .phq8-stat-value {
+            font-family: 'Sora', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.1;
+        }
+        .phq8-stat-subtext {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-top: 6px;
+        }
+        .phq8-status-note {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(243,186,100,0.08);
+            border: 1px solid rgba(243,186,100,0.16);
+            color: var(--text-muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
         .rec-main, .rec-side {
             padding: 18px;
             border-radius: 14px;
@@ -995,6 +1181,11 @@
             gap: 12px;
             flex-wrap: wrap;
         }
+        .severity-legend.detailed {
+            display: grid;
+            gap: 8px;
+            text-align: left;
+        }
         .legend-item {
             display: flex;
             align-items: center;
@@ -1002,13 +1193,26 @@
             font-size: 10px;
             color: var(--text-dim);
         }
+        .severity-legend.detailed .legend-item {
+            gap: 8px;
+            font-size: 11px;
+            line-height: 1.35;
+        }
+        .severity-legend.detailed .legend-item strong {
+            color: var(--text-main);
+        }
         .legend-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 3px;
         }
         .legend-dot.low { background: var(--success); }
+        .legend-dot.minimal { background: var(--success); }
         .legend-dot.mild { background: var(--warning); }
+        .legend-dot.moderate { background: #f97316; }
+        .legend-dot.moderately-severe { background: #fb7185; }
         .legend-dot.severe { background: var(--danger); }
         @keyframes pieGrow {
             from { stroke-dasharray: 0 100; }
@@ -1185,6 +1389,8 @@
             }
             .sidebar-left, .sidebar-right { display: none; }
             .recommendation-section { grid-template-columns: 1fr; }
+            .phq8-meta, .phq8-summary-grid { grid-template-columns: 1fr; }
+            .phq8-header { flex-direction: column; }
         }
         @media (max-width: 700px) {
             .app-top-bar { padding: 10px 14px; }
@@ -1195,6 +1401,7 @@
             .results-card { padding: 20px 16px; }
             .mic-button { width: 60px; height: 60px; font-size: 22px; }
             .primary-score-number { font-size: 36px; }
+            .phq8-section { padding: 16px; }
         }
         @media (max-height: 920px) {
             .center-main {
@@ -1512,6 +1719,68 @@
                 <div class="rec-side">
                     <p class="encouragement" id="encouragementText"></p>
                     <div class="support-note">This screening does not replace professional care. If distress feels intense or unsafe, please reach out to a licensed professional or local emergency support.</div>
+                </div>
+            </div>
+            <div class="phq8-section" id="phq8Section" style="display:none">
+                <div class="phq8-header">
+                    <div class="phq8-title-wrap">
+                        <h4>PHQ-8 Validation Form</h4>
+                        <p>Use this follow-up self-report to compare your PHQ-8 score with the model's predicted depression score.</p>
+                    </div>
+                    <span class="phq8-kicker">Depression Cross-Check</span>
+                </div>
+                <div class="phq8-meta">
+                    <div class="phq8-field">
+                        <label for="phq8Name">Name</label>
+                        <input type="text" id="phq8Name" placeholder="Optional">
+                    </div>
+                    <div class="phq8-field">
+                        <label for="phq8Dob">Date of Birth</label>
+                        <input type="date" id="phq8Dob">
+                    </div>
+                    <div class="phq8-field">
+                        <label for="phq8Today">Today's Date</label>
+                        <input type="date" id="phq8Today">
+                    </div>
+                </div>
+                <div class="phq8-table-wrap">
+                    <table class="phq8-table">
+                        <thead>
+                            <tr>
+                                <th>Over the last 2 weeks, how often have you been bothered by the following problems?</th>
+                                <th>Not at all</th>
+                                <th>Several days</th>
+                                <th>More than half the days</th>
+                                <th>Nearly every day</th>
+                            </tr>
+                        </thead>
+                        <tbody id="phq8QuestionBody"></tbody>
+                    </table>
+                </div>
+                <div class="phq8-summary-grid">
+                    <div class="phq8-stat">
+                        <span class="phq8-stat-label">Model Predicted Score</span>
+                        <div class="phq8-stat-value" id="phq8PredictedScore">0.0</div>
+                        <div class="phq8-stat-subtext">Depression score estimated from the interview model.</div>
+                    </div>
+                    <div class="phq8-stat">
+                        <span class="phq8-stat-label">PHQ-8 Self Score</span>
+                        <div class="phq8-stat-value" id="phq8CalculatedScore">0</div>
+                        <div class="phq8-stat-subtext" id="phq8CompletionText">Answer all 8 items to calculate your PHQ-8 score.</div>
+                    </div>
+                    <div class="phq8-stat">
+                        <span class="phq8-stat-label">Interpretation</span>
+                        <div class="phq8-stat-value" id="phq8SeverityLabel">Pending</div>
+                        <div class="phq8-stat-subtext" id="phq8SeverityRange">Range will appear after completion.</div>
+                    </div>
+                    <div class="phq8-stat">
+                        <span class="phq8-stat-label">Difference</span>
+                        <div class="phq8-stat-value" id="phq8ScoreGap">-</div>
+                        <div class="phq8-stat-subtext" id="phq8GapText">We will compare the questionnaire score with the model prediction here.</div>
+                    </div>
+                </div>
+                <div class="phq8-status-note" id="phq8StatusNote">
+                    This validation form appears only when the session includes depression screening.
                 </div>
             </div>
             <p class="disclaimer">This screening tool is not a clinical diagnosis. If you are in crisis, please contact a mental health professional or call a helpline immediately.</p>
@@ -1858,6 +2127,24 @@ function createSeverityPieChart(key, score, label) {
     const maxVal = isStress ? 1 : 24;
     const pct = Math.min((score / maxVal) * 100, 100);
     const displayVal = isStress ? (score * 100).toFixed(0) + '%' : score.toFixed(1);
+    const displayLabel = formatSeverityText(label || '');
+    const legendMarkup = key === 'depression'
+        ? `
+        <div class="severity-legend detailed">
+            <div class="legend-item"><span class="legend-dot minimal"></span><span><strong>0-4:</strong> No significant depressive symptoms.</span></div>
+            <div class="legend-item"><span class="legend-dot mild"></span><span><strong>5-9:</strong> Mild depressive symptoms.</span></div>
+            <div class="legend-item"><span class="legend-dot moderate"></span><span><strong>10-14:</strong> Moderate depressive symptoms.</span></div>
+            <div class="legend-item"><span class="legend-dot moderately-severe"></span><span><strong>15-19:</strong> Moderately severe depressive symptoms.</span></div>
+            <div class="legend-item"><span class="legend-dot severe"></span><span><strong>20-24:</strong> Severe depressive symptoms.</span></div>
+        </div>
+    `
+        : `
+        <div class="severity-legend">
+            <div class="legend-item"><span class="legend-dot low"></span>Low</div>
+            <div class="legend-item"><span class="legend-dot mild"></span>Mild</div>
+            <div class="legend-item"><span class="legend-dot severe"></span>Severe</div>
+        </div>
+    `;
 
     // Determine severity level and colors
     let severityLevel = 'low';
@@ -1889,14 +2176,10 @@ function createSeverityPieChart(key, score, label) {
             </svg>
             <div class="pie-chart-inner">
                 <span class="pie-score-value">${displayVal}</span>
-                <span class="pie-score-label">${label || severityLevel}</span>
+                <span class="pie-score-label">${displayLabel || severityLevel}</span>
             </div>
         </div>
-        <div class="severity-legend">
-            <div class="legend-item"><span class="legend-dot low"></span>Low</div>
-            <div class="legend-item"><span class="legend-dot mild"></span>Mild</div>
-            <div class="legend-item"><span class="legend-dot severe"></span>Severe</div>
-        </div>
+        ${legendMarkup}
     `;
     return card;
 }
@@ -2144,6 +2427,129 @@ const MODE_TIPS = {
     },
 };
 
+const PHQ8_QUESTIONS = [
+    "Little interest or pleasure in doing things",
+    "Feeling down, depressed, irritable, or hopeless",
+    "Trouble falling or staying asleep, or sleeping too much",
+    "Feeling tired or having little energy",
+    "Poor appetite or overeating",
+    "Feeling bad about yourself, or that you are a failure or have let yourself or your family down",
+    "Trouble concentrating on things, such as school work, reading, or watching television",
+    "Moving or speaking so slowly that other people could have noticed, or the opposite - being so fidgety or restless that you have been moving around a lot more than usual",
+];
+
+const PHQ8_OPTIONS = [
+    { label: 'Not at all', value: 0 },
+    { label: 'Several days', value: 1 },
+    { label: 'More than half the days', value: 2 },
+    { label: 'Nearly every day', value: 3 },
+];
+
+function formatSeverityText(label) {
+    return String(label || '')
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, ch => ch.toUpperCase());
+}
+
+function getPhq8Interpretation(score) {
+    if (score <= 4) return { label: 'No significant symptoms', range: '0-4', key: 'minimal' };
+    if (score <= 9) return { label: 'Mild symptoms', range: '5-9', key: 'mild' };
+    if (score <= 14) return { label: 'Moderate symptoms', range: '10-14', key: 'moderate' };
+    if (score <= 19) return { label: 'Moderately severe symptoms', range: '15-19', key: 'moderately_severe' };
+    return { label: 'Severe symptoms', range: '20-24', key: 'severe' };
+}
+
+function resetPhq8Section() {
+    document.getElementById('phq8Section').style.display = 'none';
+    document.getElementById('phq8QuestionBody').innerHTML = '';
+    document.getElementById('phq8Name').value = '';
+    document.getElementById('phq8Dob').value = '';
+    document.getElementById('phq8Today').value = '';
+    document.getElementById('phq8PredictedScore').textContent = '0.0';
+    document.getElementById('phq8CalculatedScore').textContent = '0';
+    document.getElementById('phq8CompletionText').textContent = 'Answer all 8 items to calculate your PHQ-8 score.';
+    document.getElementById('phq8SeverityLabel').textContent = 'Pending';
+    document.getElementById('phq8SeverityRange').textContent = 'Range will appear after completion.';
+    document.getElementById('phq8ScoreGap').textContent = '-';
+    document.getElementById('phq8GapText').textContent = 'We will compare the questionnaire score with the model prediction here.';
+    document.getElementById('phq8StatusNote').textContent = 'This validation form appears only when the session includes depression screening.';
+}
+
+function updatePhq8Score(predictedScore) {
+    const answers = PHQ8_QUESTIONS.map((_, idx) => {
+        const selected = document.querySelector(`input[name="phq8_q${idx + 1}"]:checked`);
+        return selected ? Number(selected.value) : null;
+    });
+    const answered = answers.filter(val => val !== null).length;
+    const complete = answered === PHQ8_QUESTIONS.length;
+
+    document.getElementById('phq8CalculatedScore').textContent = complete
+        ? answers.reduce((sum, val) => sum + val, 0)
+        : '0';
+    document.getElementById('phq8CompletionText').textContent = complete
+        ? 'All 8 items answered. This is your PHQ-8 self-report score.'
+        : `${answered}/8 items answered. Complete the remaining items to calculate your score.`;
+
+    if (!complete) {
+        document.getElementById('phq8SeverityLabel').textContent = 'Pending';
+        document.getElementById('phq8SeverityRange').textContent = 'Range will appear after completion.';
+        document.getElementById('phq8ScoreGap').textContent = '-';
+        document.getElementById('phq8GapText').textContent = 'We will compare the questionnaire score with the model prediction here.';
+        document.getElementById('phq8StatusNote').textContent = 'Please complete all questions for a valid PHQ-8 comparison.';
+        return;
+    }
+
+    const total = answers.reduce((sum, val) => sum + val, 0);
+    const interpretation = getPhq8Interpretation(total);
+    const gap = Math.abs(total - predictedScore);
+    document.getElementById('phq8CalculatedScore').textContent = String(total);
+    document.getElementById('phq8SeverityLabel').textContent = interpretation.label;
+    document.getElementById('phq8SeverityRange').textContent = `PHQ-8 range: ${interpretation.range}`;
+    document.getElementById('phq8ScoreGap').textContent = gap.toFixed(1);
+    document.getElementById('phq8GapText').textContent = gap <= 3
+        ? 'The questionnaire score is fairly close to the model prediction.'
+        : 'There is a noticeable difference, which is useful to review alongside the interview summary.';
+    document.getElementById('phq8StatusNote').textContent = `Model prediction: ${predictedScore.toFixed(1)}. Self-reported PHQ-8: ${total}.`;
+}
+
+function renderPhq8Section(predictedScore) {
+    const section = document.getElementById('phq8Section');
+    const tbody = document.getElementById('phq8QuestionBody');
+    const today = new Date().toISOString().split('T')[0];
+
+    tbody.innerHTML = PHQ8_QUESTIONS.map((question, idx) => {
+        const optionsHtml = PHQ8_OPTIONS.map(option => `
+            <td class="phq8-option-cell">
+                <label class="phq8-option" title="${option.label}">
+                    <input type="radio" name="phq8_q${idx + 1}" value="${option.value}">
+                </label>
+            </td>
+        `).join('');
+
+        return `
+            <tr>
+                <td>
+                    <div class="phq8-question">
+                        <span class="phq8-question-number">${idx + 1}.</span>
+                        <span class="phq8-question-text">${question}</span>
+                    </div>
+                </td>
+                ${optionsHtml}
+            </tr>
+        `;
+    }).join('');
+
+    document.getElementById('phq8PredictedScore').textContent = predictedScore.toFixed(1);
+    document.getElementById('phq8Today').value = today;
+
+    tbody.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', () => updatePhq8Score(predictedScore));
+    });
+
+    updatePhq8Score(predictedScore);
+    section.style.display = 'block';
+}
+
 function buildPerModeRecs(scores, labels) {
     const container = document.getElementById('perModeRecs');
     container.innerHTML = '';
@@ -2159,12 +2565,13 @@ function buildPerModeRecs(scores, labels) {
 
         const card = document.createElement('div');
         card.className = `mode-rec-card ${key}`;
+        const displayLabel = formatSeverityText(label);
 
         const tipsHTML = tips.map(t => `<li>${t}</li>`).join('');
         card.innerHTML = `
             <div class="mode-rec-header">
                 <span class="mode-rec-title">${key}</span>
-                <span class="mode-rec-severity ${label}">${label}</span>
+                <span class="mode-rec-severity ${label}">${displayLabel}</span>
             </div>
             <div class="mode-rec-score">Score: ${displayVal}</div>
             <ul class="mode-rec-tips">${tipsHTML}</ul>
@@ -2209,7 +2616,7 @@ async function showResults() {
             const badge = document.createElement('span');
             const cssClass = lbl.includes('severe') ? 'severe' : lbl;
             badge.className = `severity-badge severity-${cssClass}`;
-            badge.textContent = `${key}: ${lbl}`;
+            badge.textContent = `${key}: ${formatSeverityText(lbl)}`;
             badgesEl.appendChild(badge);
         }
 
@@ -2218,6 +2625,7 @@ async function showResults() {
 
         document.getElementById('resultsInfo').textContent = `Assessment: ${formatAssessmentLabel(data.assessment_type || 'all')}`;
         document.getElementById('demoWarning').style.display = data.demo_mode ? 'block' : 'none';
+        resetPhq8Section();
 
         if (data.recommendation) {
             const rec = data.recommendation;
@@ -2233,6 +2641,9 @@ async function showResults() {
             document.getElementById('recommendationSection').style.display = 'grid';
             setAccordionState('recommendationPanel', true);
             setAccordionState('resourcesPanel', false);
+        }
+        if ((data.assessment_type === 'depression' || data.assessment_type === 'all') && typeof scores.depression === 'number') {
+            renderPhq8Section(scores.depression);
         }
         rl.classList.remove('active'); rc.style.display = 'block';
         document.querySelectorAll('.recommendation-list li, .resources-list li').forEach((li, i) => { li.style.animationDelay = `${i * 0.08}s`; });
