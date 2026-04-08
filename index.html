@@ -558,14 +558,15 @@
         }
         .modal h3 { font-family: 'Sora', sans-serif; font-size: 20px; margin-bottom: 8px; }
         .modal p { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
-        .modal-btns { display: flex; gap: 10px; justify-content: center; }
+        .modal-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
         .btn-cancel {
             background: var(--panel-strong);
             color: var(--text-main);
             border: 1px solid var(--border-soft);
         }
         .btn-cancel:hover { border-color: rgba(255,255,255,0.16); }
-        .btn-confirm-exit { background: var(--danger); color: white; }
+        .btn-confirm-exit { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+        .btn-discard-session { background: var(--danger); color: white; }
 
         /* ── Results overlay ──────────────────────────────────── */
         .results-overlay {
@@ -613,6 +614,69 @@
         }
         .results-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
         .results-info { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 16px; }
+        .results-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(109,40,217,0.18), rgba(168,85,247,0.14));
+            border: 1px solid rgba(168,85,247,0.28);
+            box-shadow: 0 18px 42px rgba(76,29,149,0.2);
+        }
+        .results-actions-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .results-actions-copy strong {
+            font-size: 13px;
+            font-weight: 800;
+            color: #f3e8ff;
+            letter-spacing: 0.01em;
+        }
+        .results-actions-copy span {
+            font-size: 11px;
+            color: rgba(243,232,255,0.82);
+        }
+        .btn-download-report {
+            appearance: none;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: linear-gradient(135deg, #7c3aed, #a855f7 55%, #c084fc);
+            color: #fff;
+            border-radius: 999px;
+            padding: 14px 22px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 14px 30px rgba(124,58,237,0.4);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, filter 0.15s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-download-report::before {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.04));
+            pointer-events: none;
+        }
+        .btn-download-report:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 18px 36px rgba(124,58,237,0.5);
+            border-color: rgba(255,255,255,0.28);
+            filter: saturate(1.08);
+        }
+        .btn-download-report:disabled {
+            opacity: 0.7;
+            cursor: wait;
+        }
         .demo-warning {
             display: none;
             text-align: center;
@@ -623,6 +687,18 @@
             border: 1px solid rgba(243,186,100,0.16);
             font-size: 11px;
             color: var(--warning);
+            font-weight: 700;
+        }
+        .partial-warning {
+            display: none;
+            margin-bottom: 14px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.32);
+            color: #fcd34d;
+            font-size: 12px;
+            line-height: 1.5;
             font-weight: 700;
         }
 
@@ -742,6 +818,47 @@
             grid-template-columns: 1fr 280px;
             gap: 16px;
             margin-top: 8px;
+        }
+        .phq8-prompt {
+            display: none;
+            margin-top: 18px;
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(94,123,255,0.2);
+            background: linear-gradient(145deg, rgba(94,123,255,0.1), rgba(42,198,184,0.05));
+        }
+        .phq8-prompt h4 {
+            margin: 0 0 6px;
+            font-size: 16px;
+            font-family: 'Sora', sans-serif;
+        }
+        .phq8-prompt p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .phq8-prompt-actions {
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .btn-phq8-start {
+            appearance: none;
+            border: 1px solid rgba(94,123,255,0.28);
+            background: linear-gradient(135deg, rgba(94,123,255,0.22), rgba(42,198,184,0.14));
+            color: var(--text-main);
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .btn-phq8-start:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.18);
         }
         .phq8-section {
             margin-top: 18px;
@@ -1652,11 +1769,12 @@
 <!-- ─── Exit Modal ────────────────────────────────────────── -->
 <div class="modal-overlay" id="exitModalOverlay">
     <div class="modal">
-        <h3>End session?</h3>
-        <p>Your current progress will be cleared and you will return to the intake page.</p>
+        <h3>Finish interview early?</h3>
+        <p>You can stop now and get a partial recommendation report based on the answers collected so far. Fewer answered questions may reduce accuracy.</p>
         <div class="modal-btns">
-            <button class="btn btn-cancel" onclick="cancelExit()">Cancel</button>
-            <button class="btn btn-confirm-exit" onclick="confirmExit()">End Session</button>
+            <button class="btn btn-cancel" onclick="cancelExit()">Continue Interview</button>
+            <button class="btn btn-confirm-exit" onclick="confirmExit()">View Partial Report</button>
+            <button class="btn btn-discard-session" onclick="discardSession()">Discard Session</button>
         </div>
     </div>
 </div>
@@ -1674,6 +1792,14 @@
             <p class="results-subtitle">A cleaner view of your screening snapshot with organized next steps.</p>
             <p class="results-info" id="resultsInfo"></p>
             <div class="demo-warning" id="demoWarning">Demo mode is active. These scores are illustrative only.</div>
+            <div class="partial-warning" id="partialWarning"></div>
+            <div class="results-actions">
+                <div class="results-actions-copy">
+                    <strong>Save your report</strong>
+                    <span>Download a polished PDF with your scores, recommendations, and demographic details.</span>
+                </div>
+                <button class="btn-download-report" id="downloadReportBtn" type="button" onclick="downloadPdfReport()">Download PDF Report</button>
+            </div>
 
             <!-- Severity Pie Charts — center-stage visualization -->
             <div class="severity-charts-row" id="severityChartsRow"></div>
@@ -1719,6 +1845,13 @@
                 <div class="rec-side">
                     <p class="encouragement" id="encouragementText"></p>
                     <div class="support-note">This screening does not replace professional care. If distress feels intense or unsafe, please reach out to a licensed professional or local emergency support.</div>
+                </div>
+            </div>
+            <div class="phq8-prompt" id="phq8Prompt">
+                <h4>Would you like to cross-check depression with PHQ-8?</h4>
+                <p>This optional follow-up form lets you compare your self-reported PHQ-8 score with the model's predicted depression score.</p>
+                <div class="phq8-prompt-actions">
+                    <button class="btn-phq8-start" type="button" onclick="openPhq8Form()">Open PHQ-8 Cross-Check</button>
                 </div>
             </div>
             <div class="phq8-section" id="phq8Section" style="display:none">
@@ -1801,6 +1934,11 @@ let liveTranscript = '';
 let sessionSeconds = 0;
 let timerInterval = null;
 let isRecording = false;
+let activeAudioStream = null;
+let discardCurrentRecording = false;
+let isProcessingResponse = false;
+let finishInterviewRequested = false;
+let pendingPhq8PredictedScore = null;
 
 /* ── DOM refs ──────────────────────────────────────────────── */
 const chatContainer = document.getElementById('chatContainer');
@@ -2138,6 +2276,24 @@ function createSeverityPieChart(key, score, label) {
             <div class="legend-item"><span class="legend-dot severe"></span><span><strong>20-24:</strong> Severe depressive symptoms.</span></div>
         </div>
     `
+        : key === 'anxiety'
+        ? `
+        <div class="severity-legend detailed">
+            <div class="legend-item"><span class="legend-dot minimal"></span><span><strong>0-4:</strong> Minimal anxiety symptoms.</span></div>
+            <div class="legend-item"><span class="legend-dot mild"></span><span><strong>5-9:</strong> Mild anxiety symptoms.</span></div>
+            <div class="legend-item"><span class="legend-dot moderate"></span><span><strong>10-14:</strong> Moderate anxiety symptoms.</span></div>
+            <div class="legend-item"><span class="legend-dot severe"></span><span><strong>15-24:</strong> Severe anxiety symptoms.</span></div>
+        </div>
+    `
+        : key === 'stress'
+        ? `
+        <div class="severity-legend detailed">
+            <div class="legend-item"><span class="legend-dot minimal"></span><span><strong>0-29%:</strong> Minimal stress load.</span></div>
+            <div class="legend-item"><span class="legend-dot mild"></span><span><strong>30-49%:</strong> Mild stress load.</span></div>
+            <div class="legend-item"><span class="legend-dot moderate"></span><span><strong>50-69%:</strong> Moderate stress load.</span></div>
+            <div class="legend-item"><span class="legend-dot severe"></span><span><strong>70-100%:</strong> Severe stress load.</span></div>
+        </div>
+    `
         : `
         <div class="severity-legend">
             <div class="legend-item"><span class="legend-dot low"></span>Low</div>
@@ -2234,12 +2390,22 @@ function toggleRecording() {
 async function startRecording() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        activeAudioStream = stream;
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
         mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
         mediaRecorder.onstop = async () => {
             const blob = new Blob(audioChunks, { type: 'audio/webm' });
             stream.getTracks().forEach(t => t.stop());
+            activeAudioStream = null;
+            if (discardCurrentRecording) {
+                discardCurrentRecording = false;
+                if (finishInterviewRequested) {
+                    finishInterviewRequested = false;
+                    await showPartialResults();
+                }
+                return;
+            }
             await sendResponse(blob);
         };
         mediaRecorder.start();
@@ -2288,15 +2454,23 @@ async function sendResponse(blob) {
     addMessage(userMsg, false);
     showProcessingBubble('Analyzing your response...');
     showLoadingBar('Processing audio...');
+    isProcessingResponse = true;
     const fd = new FormData();
     fd.append('audio', blob, 'response.webm');
     try {
         await fetch('/analyze_speech?force_demo=false', { method: 'POST', body: fd });
         hideProcessingBubble();
-        await getNextQuestion(savedTranscript);
+        if (finishInterviewRequested) {
+            finishInterviewRequested = false;
+            await showPartialResults();
+        } else {
+            await getNextQuestion(savedTranscript);
+        }
     } catch (e) {
         console.error(e); hideProcessingBubble(); hideLoadingBar(); addMessage('Error processing response. Please try again.', true);
         micBtn.disabled = false;
+    } finally {
+        isProcessingResponse = false;
     }
 }
 
@@ -2460,6 +2634,8 @@ function getPhq8Interpretation(score) {
 }
 
 function resetPhq8Section() {
+    pendingPhq8PredictedScore = null;
+    document.getElementById('phq8Prompt').style.display = 'none';
     document.getElementById('phq8Section').style.display = 'none';
     document.getElementById('phq8QuestionBody').innerHTML = '';
     document.getElementById('phq8Name').value = '';
@@ -2473,6 +2649,12 @@ function resetPhq8Section() {
     document.getElementById('phq8ScoreGap').textContent = '-';
     document.getElementById('phq8GapText').textContent = 'We will compare the questionnaire score with the model prediction here.';
     document.getElementById('phq8StatusNote').textContent = 'This validation form appears only when the session includes depression screening.';
+}
+
+function openPhq8Form() {
+    if (typeof pendingPhq8PredictedScore !== 'number') return;
+    document.getElementById('phq8Prompt').style.display = 'none';
+    renderPhq8Section(pendingPhq8PredictedScore);
 }
 
 function updatePhq8Score(predictedScore) {
@@ -2623,8 +2805,14 @@ async function showResults() {
         // Per-mode personalized recommendations
         buildPerModeRecs(scores, labels);
 
-        document.getElementById('resultsInfo').textContent = `Assessment: ${formatAssessmentLabel(data.assessment_type || 'all')}`;
+        const answeredInfo = typeof data.answered_questions === 'number'
+            ? ` • Answered: ${data.answered_questions}/${data.total_questions || totalQuestions}`
+            : '';
+        document.getElementById('resultsInfo').textContent = `Assessment: ${formatAssessmentLabel(data.assessment_type || 'all')}${answeredInfo}`;
         document.getElementById('demoWarning').style.display = data.demo_mode ? 'block' : 'none';
+        const partialWarning = document.getElementById('partialWarning');
+        partialWarning.textContent = data.partial_warning || '';
+        partialWarning.style.display = data.partial_warning ? 'block' : 'none';
         resetPhq8Section();
 
         if (data.recommendation) {
@@ -2642,8 +2830,9 @@ async function showResults() {
             setAccordionState('recommendationPanel', true);
             setAccordionState('resourcesPanel', false);
         }
-        if ((data.assessment_type === 'depression' || data.assessment_type === 'all') && typeof scores.depression === 'number') {
-            renderPhq8Section(scores.depression);
+        if (!data.partial_report && (data.assessment_type === 'depression' || data.assessment_type === 'all') && typeof scores.depression === 'number') {
+            pendingPhq8PredictedScore = scores.depression;
+            document.getElementById('phq8Prompt').style.display = 'block';
         }
         rl.classList.remove('active'); rc.style.display = 'block';
         document.querySelectorAll('.recommendation-list li, .resources-list li').forEach((li, i) => { li.style.animationDelay = `${i * 0.08}s`; });
@@ -2654,24 +2843,90 @@ async function showResults() {
     }
 }
 
+async function downloadPdfReport() {
+    const btn = document.getElementById('downloadReportBtn');
+    const originalText = btn ? btn.textContent : 'Download PDF Report';
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = 'Preparing PDF...';
+        }
+        const response = await fetch('/download_report');
+        if (!response.ok) {
+            throw new Error(`Download failed with status ${response.status}`);
+        }
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const header = response.headers.get('Content-Disposition') || '';
+        const match = header.match(/filename\*=UTF-8''([^;]+)/i);
+        const filename = match ? decodeURIComponent(match[1]) : 'mindspace-report.pdf';
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error(error);
+        alert('Unable to download the PDF report right now. Please try again.');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    }
+}
+
+async function showPartialResults() {
+    stopTimer();
+    hideBtn(micBtn);
+    hideBtn(exitInterviewBtn);
+    updateStatus('Preparing partial report...');
+    addMessage('Interview ended early. I am preparing a partial report using the responses collected so far. Please read the warning carefully because limited data can reduce accuracy.', true);
+    showLoadingBar('Generating partial recommendations...');
+    await new Promise(resolve => setTimeout(resolve, 800));
+    await showResults();
+}
+
 /* ── Session management ────────────────────────────────────── */
 function exitSession() { document.getElementById('exitModalOverlay').classList.add('active'); }
 function cancelExit() { document.getElementById('exitModalOverlay').classList.remove('active'); }
 async function confirmExit() {
     document.getElementById('exitModalOverlay').classList.remove('active');
+    if (isRecording) {
+        finishInterviewRequested = true;
+        discardCurrentRecording = true;
+        if (recognition) recognition.stop();
+        if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+        transcriptionBox.classList.remove('active');
+        isRecording = false;
+        micBtn.classList.remove('recording');
+        micBtn.disabled = true;
+        updateStatus('Preparing partial report...');
+        return;
+    }
+    if (isProcessingResponse) {
+        finishInterviewRequested = true;
+        updateStatus('Finishing after current response...');
+        addMessage('I will finish the interview as soon as the current response is processed, then generate a partial report.', true);
+        return;
+    }
+    await showPartialResults();
+}
+async function discardSession() {
+    document.getElementById('exitModalOverlay').classList.remove('active');
+    discardCurrentRecording = true;
+    finishInterviewRequested = false;
     try { await fetch('/exit_session', { method: 'POST' }); } catch (e) {}
     if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+    if (activeAudioStream) activeAudioStream.getTracks().forEach(t => t.stop());
     if (recognition) recognition.stop();
     stopTimer();
-    // Redirect back to intake page
     window.location.href = '/';
 }
 async function startNewSession() {
-    try { await fetch('/exit_session', { method: 'POST' }); } catch (e) {}
-    if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
-    if (recognition) recognition.stop();
-    stopTimer();
-    window.location.href = '/';
+    await discardSession();
 }
 
 /* ── Init ──────────────────────────────────────────────────── */

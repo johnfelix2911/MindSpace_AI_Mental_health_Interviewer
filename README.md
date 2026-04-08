@@ -36,6 +36,10 @@ The app serves a polished demographic intake page, runs a guided voice interview
 - Aggregates scores across questions
 - Labels severity for depression, anxiety, and stress
 - Generates a recommendation summary with action items and resources
+- Shows detailed severity legends for depression, anxiety, and stress on the results screen
+- Lets users stop the interview early and still receive a partial report with a clear low-data warning
+- Generates a downloadable PDF report with demographics, scores, severity interpretations, recommendations, and resources
+- Offers an optional PHQ-8 depression cross-check prompt after results instead of auto-opening the form
 
 ## Product Flow
 
@@ -72,6 +76,9 @@ The current UI includes:
 - A glassmorphism demographic intake screen with collapsible context sections
 - A full interview dashboard with progress tracking, voice controls, and result overlays
 - Severity visualizations and personalized recommendations at the end of the session
+- A prominent one-click PDF export button in the results view
+- An early-exit flow that can convert the current session into a partial report
+- An optional PHQ-8 follow-up prompt for depression validation
 
 For deeper technical notes, see [ARCHITECTURE.md](/c:/Users/SOURENDRA/OneDrive/Desktop/IIT_KGP/Sem-6/IS_Project/Mental-Health-ai-interviewer/docs/ARCHITECTURE.md) and [DEPLOYMENT.md](/c:/Users/SOURENDRA/OneDrive/Desktop/IIT_KGP/Sem-6/IS_Project/Mental-Health-ai-interviewer/docs/DEPLOYMENT.md).
 
@@ -118,6 +125,7 @@ Mental-Health-ai-interviewer/
 |   |-- llm_service.py
 |   |-- questionnaire.py
 |   |-- recommendations.py
+|   |-- reporting.py
 |   `-- session_store.py
 `-- utils/
     |-- audio_common.py
@@ -146,6 +154,8 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+
+This now includes `reportlab`, which is used to generate downloadable PDF reports.
 
 ### 3. Create `.env`
 
@@ -219,7 +229,30 @@ Open `http://localhost:8001`.
 | `POST` | `/next_question` | Request next interview question |
 | `POST` | `/analyze_speech` | Upload and score audio |
 | `GET` | `/results` | Get final screening output |
+| `GET` | `/download_report` | Download the current report as a PDF |
 | `POST` | `/exit_session` | End and clear the session |
+
+## Results and Reporting Flow
+
+- The results screen shows severity cards for depression, anxiety, and stress along with detailed score legends
+- The `Download PDF Report` button exports a clean report containing:
+  - demographic form details
+  - averaged scores and severity labels
+  - detailed severity interpretation tables
+  - recommendation summary, action items, and resources
+  - warnings when the session ended too early for high-confidence output
+- If the user exits the interview early, the app can generate a partial report using only the answers collected so far
+- Partial reports include an explicit warning that limited data may reduce accuracy
+- If no usable answers were collected, the app returns an insufficient-data message instead of a misleading recommendation
+- The PDF generator is implemented in `services/reporting.py`
+
+## PHQ-8 Depression Cross-Check
+
+- When the session includes depression screening and the interview was completed normally, the PHQ-8 form is available as an optional follow-up
+- The PHQ-8 form no longer appears automatically at the bottom of the page
+- Instead, the results page asks whether the user wants to open the PHQ-8 cross-check
+- If the user agrees, the existing PHQ-8 form is revealed and can be used to compare the self-report score with the model-predicted depression score
+- The PHQ-8 prompt is suppressed for partial reports to avoid over-interpreting incomplete sessions
 
 ## Local vs Online Components
 
@@ -244,6 +277,7 @@ Open `http://localhost:8001`.
 - `verify_setup.py` currently mentions copying `.env.example`, but this repository does not include that file; create `.env` manually.
 - Session storage is in-memory through the default session store, so restarting the app clears active sessions.
 - The UI is optimized for a browser with microphone permissions enabled.
+- Partial reports are intentionally marked as lower-confidence outputs when the user exits before finishing all interview questions.
 
 ## Development Commands
 
@@ -264,7 +298,6 @@ python scripts/verify_setup.py
 
 - Persist sessions with Redis or a database
 - Add authentication and multi-user session isolation
-- Export reports as PDF
 - Add structured clinician-facing analytics
 - Add tests for API routes and frontend flow
 

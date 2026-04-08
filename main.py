@@ -5,9 +5,10 @@ Unified backend serving depression, anxiety, and stress assessments.
 
 import os
 import json
+from urllib.parse import quote
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse, FileResponse, Response
 from pydantic import BaseModel
 from typing import List, Optional
 import uvicorn
@@ -22,6 +23,7 @@ from services.llm_service import (
     is_local_llm_available,
     generate_recommendation,
 )
+from services.reporting import build_pdf_report, build_report_filename
 from pipelines.depression_pipeline import (
     load_model as load_depression_model,
     is_demo_mode as depression_demo_mode,
@@ -381,15 +383,18 @@ async def analyze_speech(audio: UploadFile = File(...), force_demo: bool = False
 @app.get("/results")
 async def get_results():
     print(f"\n[ROUTE] GET /results")
-    sid, session    = get_or_create_default()
+    _, session = get_or_create_default()
+    return _build_results_payload_v2(session)
+
+
+def _build_results_payload(session: dict) -> dict:
     assessment_type = session.get("assessment_type", "all")
-    demographics    = session.get("demographics", {})
-    llm_mode        = session.get("llm_mode", "gemini")
+    demographics = session.get("demographics", {})
+    llm_mode = session.get("llm_mode", "gemini")
 
     print(f"[RESULTS] Computing final scores for assessment: {assessment_type.upper()}  llm_mode: {llm_mode}")
     print(f"[RESULTS] Raw session scores: {session.get('scores', {})}")
 
-    # Average all per-question scores into a single value per assessment
     avg_scores = {}
     for key in ("depression", "anxiety", "stress"):
         if assessment_type in (key, "all"):
@@ -428,6 +433,99 @@ async def get_results():
         "recommendation": recommendation,
         "demo_mode": depression_demo_mode(),
     }
+
+
+def _build_results_payload_v2(session: dict) -> dict:
+    assessment_type = session.get("assessment_type", "all")
+    demographics = session.get("demographics", {})
+    llm_mode = session.get("llm_mode", "gemini")
+    total_questions = session.get("total_questions", TOTAL_QUESTIONS)
+
+    print(f"[RESULTS] Computing final scores for assessment: {assessment_type.upper()}  llm_mode: {llm_mode}")
+    print(f"[RESULTS] Raw session scores: {session.get('scores', {})}")
+
+    avg_scores = {}
+    answered_questions = 0
+    for key in ("depression", "anxiety", "stress"):
+        if assessment_type in (key, "all"):
+            vals = session["scores"].get(key, [])
+            avg = round(sum(vals) / len(vals), 2) if vals else 0.0
+            avg_scores[key] = avg
+            answered_questions = max(answered_questions, len(vals))
+            print(f"[RESULTS] {key}: {vals} -> average = {avg}")
+
+    print(f"[RESULTS] Final averaged scores: {avg_scores}")
+
+    labels = compute_labels(avg_scores)
+    partial_report = answered_questions < total_questions
+
+    if answered_questions == 0:
+        recommendation = {
+            "summary": "No completed answers were available, so this report has insufficient data and should not be treated as accurate.",
+            "recommendations": [
+                "Complete at least one or two answered questions before relying on this report.",
+                "Retake the interview when you have enough time to respond more fully.",
+                "Use this report only as a temporary snapshot, not a decision tool.",
+            ],
+            "resources": [
+                "If you need support now, reach out to a trusted person or a licensed mental health professional.",
+            ],
+            "encouragement": "You can return and continue the interview whenever you feel ready.",
+            "llm_generated": False,
+        }
+    elif llm_mode == "local" and is_local_llm_available():
+        print(f"[RESULTS] Generating AI recommendation via LOCAL LLM ...")
+        recommendation = generate_recommendation(
+            avg_scores, labels, demographics, assessment_type, llm_mode="local"
+        )
+    elif llm_mode == "gemini" and is_llm_available():
+        print(f"[RESULTS] Generating AI recommendation via Gemini ...")
+        recommendation = generate_recommendation(
+            avg_scores, labels, demographics, assessment_type, llm_mode="gemini"
+        )
+    else:
+        print(f"[RESULTS] Using hardcoded recommendation (no LLM available).")
+        from services.llm_service import _hardcoded_recommendation
+
+        recommendation = _hardcoded_recommendation(avg_scores, labels, assessment_type)
+
+    partial_warning = None
+    if partial_report:
+        partial_warning = (
+            f"This is a partial report based on {answered_questions} of {total_questions} answered "
+            f"questions. Recommendations may be less accurate because the interview ended early."
+        )
+
+    print(f"[RESULTS] All done. Returning results to client.")
+    return {
+        "completed": True,
+        "assessment_type": assessment_type,
+        "scores": avg_scores,
+        "labels": labels,
+        "details": {},
+        "recommendation": recommendation,
+        "demo_mode": depression_demo_mode(),
+        "answered_questions": answered_questions,
+        "total_questions": total_questions,
+        "partial_report": partial_report,
+        "partial_warning": partial_warning,
+    }
+
+
+@app.get("/download_report")
+async def download_report():
+    print(f"\n[ROUTE] GET /download_report")
+    _, session = get_or_create_default()
+    results = _build_results_payload_v2(session)
+    demographics = session.get("demographics", {})
+    pdf_bytes = build_pdf_report(results, demographics)
+    filename = build_report_filename(demographics)
+    quoted_name = quote(filename)
+    headers = {
+        "Content-Disposition": f"attachment; filename*=UTF-8''{quoted_name}"
+    }
+    print(f"[REPORT] PDF ready: {filename}")
+    return Response(content=pdf_bytes, media_type="application/pdf", headers=headers)
 
 
 # ── Session management ────────────────────────────────────────
