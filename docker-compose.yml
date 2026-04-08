@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: mindspace-app
+    init: true
     ports:
       - "8001:8001"
     environment:
@@ -23,6 +24,12 @@ services:
     volumes:
       - hf_cache:/app/.cache/huggingface
       - torch_cache:/app/.cache/torch
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys, urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health', timeout=5); sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
 
   asset-prep:
@@ -31,6 +38,7 @@ services:
       dockerfile: Dockerfile
     profiles:
       - setup
+    init: true
     environment:
       HOST: 0.0.0.0
       PORT: 8001

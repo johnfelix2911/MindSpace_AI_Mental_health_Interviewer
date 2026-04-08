@@ -203,6 +203,28 @@ python main.py
 
 Open `http://localhost:8001`.
 
+## Docker
+
+### Build and run with Docker Compose
+
+```bash
+docker compose up --build
+```
+
+This starts the FastAPI app on `http://localhost:8001`.
+
+### Prepare offline assets in the setup profile
+
+```bash
+docker compose --profile setup run --rm asset-prep
+```
+
+Notes:
+
+- The Docker image now includes the PDF-report dependency path used by `reportlab`
+- The app container exposes a healthcheck against `/health`
+- Hugging Face and Torch caches are persisted through named Docker volumes
+
 ## Model Assets
 
 | Asset | Source | Approx. size | Purpose |
